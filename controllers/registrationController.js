@@ -1,41 +1,41 @@
-var Staff = require('../objects/Staff');
+var Registration = require('../objects/Registration');
 
-// Display list of all staffs.
-exports.staff_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff list');
+// Display list of all registrations.
+exports.registration_list = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration list');
 };
 
-// Display detail page for a specific staff.
-exports.staff_read = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff detail: ' + req.params.id);
+// Display detail page for a specific registration.
+exports.registration_read = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration detail: ' + req.params.id);
 };
 
-// Display staff create form on GET.
-exports.staff_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff create GET');
+// Display registration create form on GET.
+exports.registration_create_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration create GET');
 };
 
-// Handle staff create on POST.
-exports.staff_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff create POST');
+// Handle registration create on POST.
+exports.registration_create_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration create POST');
 };
 
-// Display staff delete form on GET.
-exports.staff_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff delete GET');
+// Display registration delete form on GET.
+exports.registration_delete_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration delete GET');
 };
 
-// Handle staff delete on POST.
-exports.staff_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff delete POST');
+// Handle registration delete on POST.
+exports.registration_delete_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration delete POST');
 };
 
-// Display staff update form on GET.
-exports.staff_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff update GET');
+// Display registration update form on GET.
+exports.registration_update_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration update GET');
 };
 
-// Handle staff update on POST.
-exports.staff_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff update POST');
+// Handle registration update on POST.
+exports.registration_update_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: registration update POST');
 };

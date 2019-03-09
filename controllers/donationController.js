@@ -1,41 +1,41 @@
-var Staff = require('../objects/Staff');
+var Donation = require('../objects/Donation');
 
-// Display list of all staffs.
-exports.staff_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff list');
+// Display list of all donations.
+exports.donation_list = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation list');
 };
 
-// Display detail page for a specific staff.
-exports.staff_read = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff detail: ' + req.params.id);
+// Display detail page for a specific donation.
+exports.donation_read = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
 };
 
-// Display staff create form on GET.
-exports.staff_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff create GET');
+// Display donation create form on GET.
+exports.donation_create_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation create GET');
 };
 
-// Handle staff create on POST.
-exports.staff_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff create POST');
+// Handle donation create on POST.
+exports.donation_create_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation create POST');
 };
 
-// Display staff delete form on GET.
-exports.staff_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff delete GET');
+// Display donation delete form on GET.
+exports.donation_delete_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation delete GET');
 };
 
-// Handle staff delete on POST.
-exports.staff_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff delete POST');
+// Handle donation delete on POST.
+exports.donation_delete_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation delete POST');
 };
 
-// Display staff update form on GET.
-exports.staff_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff update GET');
+// Display donation update form on GET.
+exports.donation_update_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation update GET');
 };
 
-// Handle staff update on POST.
-exports.staff_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff update POST');
+// Handle donation update on POST.
+exports.donation_update_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: donation update POST');
 };
