@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 //Schema
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schem;
 
 //Object
 var PersonSchema = new Schema({
