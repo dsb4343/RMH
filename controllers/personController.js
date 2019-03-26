@@ -51,15 +51,52 @@ exports.person_create_get = function(req, res) {
                 staff: result.patient
             });
         }
-        
     })
     //res.send('NOT IMPLEMENTED: person create GET');
 };
 
 // Handle person create on POST.
-exports.person_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: person create POST');
-};
+exports.person_create_post = [
+    //Validation
+    body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
+    body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
+    body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
+    body('address').isLength({min: 1}).trim().withMessage('Missing Address'),
+    sanitizeBody('firstName').trim().escape(),
+    sanitizeBody('lastName').trim().escape(),
+    sanitizeBody('email').trim().escape(),
+    sanitizeBody('address').trim().escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('person_create', {
+                title: 'New Participant Error',
+                errors: errors.array()
+            });
+            return;
+        }
+        else {
+            var person = new Person({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                phone: req.body.phone,
+                street: req.body.street,
+                city: req.body.city,
+                state: req.body.state,
+                zip: req.body.zip,
+                emergencyContact: req.body.emergencyContact,
+                emergencyPhone: req.body.emergencyPhone
+            });
+            person.save(function(err) {
+                if (err) {return next(err)};
+                res.redirect(participant.url);
+            });
+        }
+    }
+    //res.send('NOT IMPLEMENTED: person create POST');
+];
 
 // Display person delete form on GET.
 exports.person_delete_get = function(req, res) {
