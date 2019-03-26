@@ -1,8 +1,14 @@
 var Room = require('../objects/Room');
 
 // Display list of all rooms.
-exports.room_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: room list');
+exports.room_list = function(req, res, next) {
+    Room.find()
+    .sort([['roomNumber', 'ascending']])
+    .execute(function(err, list_room) {
+        if (err) {return next(err)};
+        res.render('room_list', { title: 'All Room', room_list: list_room});
+    }); 
+    //res.send('NOT IMPLEMENTED: room list');
 };
 
 // Display detail page for a specific room.
