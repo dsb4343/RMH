@@ -190,6 +190,6 @@ exports.person_update_post = [
                 _id:req.params.id
             });
         };
-    };
+    }
     //res.send('NOT IMPLEMENTED: person update POST');
 ];
