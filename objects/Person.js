@@ -6,8 +6,8 @@ var Schema = mongoose.Schema;
 
 //Object
 var PersonSchema = new Schema({
-    lastName: {type: String, max: 100},
-    firstName: {type: String, max: 100},
+    lastName: {type: String, max: 100, required: true},
+    firstName: {type: String, max: 100, required: true},
     phone: {type: Number, max: 10},
     email: {type: String, },
     street: {type: String, },
