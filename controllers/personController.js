@@ -14,6 +14,7 @@ exports.person_list = function(req, res, next) {
 // Display detail page for a specific person.
 exports.person_read = function(req, res, next) {
     Person.find()
+    .populate('person')
     .exec(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
@@ -126,7 +127,12 @@ exports.person_delete_post = function(req, res, next) {
 exports.person_update_get = function(req, res) {
     async.parallel({
         person: function(callback) {
-            Person.findById(req.params.id).exec(callback);
+            Person.findById(req.params.id)
+            .populate('person')
+            .populate('guest')
+            .populate('patient')
+            .populate('staff')
+            .exec(callback);
         },
         guest: function(callback) {
             Guest.find({},"xx").exec(callback);
@@ -186,7 +192,7 @@ exports.person_update_post = [
                 state: req.body.state,
                 zip: req.body.zip,
                 emergencyContact: req.body.emergencyContact,
-                emergencyPhone: req.body.emergencyPhone
+                emergencyPhone: req.body.emergencyPhone,
                 _id:req.params.id
             });
         };

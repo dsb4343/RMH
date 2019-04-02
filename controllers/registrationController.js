@@ -123,7 +123,7 @@ exports.registration_create_post = [
                     Room.find(callback)
                 },
                 
-            }, function (err. results) {
+            }, function (err, results) {
                 if (err) { return next(err); }
                 res.render('registration_form', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
@@ -149,7 +149,7 @@ exports.registration_delete_get = function(req, res, next) {
         if (err) { return next(err); }
         if(registration==null) {
             res.redirect('/index/registration');
-        }
+        };
         res.render('registration_delete', { title: 'Delete Registration', registration: registration });
     });
 };
@@ -241,7 +241,7 @@ exports.registration_update_post = [
                     Room.find(callback)
                 },
                 
-            }, function (err. results) {
+            }, function (err, results) {
                 if (err) { return next(err); }
                 res.render('registration_form', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
