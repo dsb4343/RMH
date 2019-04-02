@@ -148,7 +148,7 @@ exports.registration_delete_get = function(req, res, next) {
     .exec(function (err, registration) {
         if (err) { return next(err); }
         if(registration==null) {
-            res.redirect('/index/registration');
+            res.redirect('/admin/registration');
         }
         res.render('registration_delete', { title: 'Delete Registration', registration: registration });
     });
@@ -158,7 +158,7 @@ exports.registration_delete_get = function(req, res, next) {
 exports.registration_delete_post = function(req, res, next) {
     registration.findByIdAndRemove(req.body.id, function deleteregistration(err) {
         if (err) { return next(err); }
-        res.redirect('/index/registration');
+        res.redirect('/admin/registration');
     })
 };
 
