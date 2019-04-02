@@ -166,7 +166,7 @@ exports.registration_delete_post = function(req, res, next) {
 exports.registration_update_get = function(req, res, next) {
     async.parallel({ 
         registration:function(callback) {
-            scjedi;e/fomdBuOd(req.params.id)
+            Registration.FindById(req.params.id)
             .populate('guest')
             .populate('patient')
             .populate('staff')
