@@ -1,19 +1,35 @@
 var Donation = require('../objects/Donation');
+var Person = require('../objects/Person');
+
+var async = require('async');
+
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all donations.
 exports.donation_list = function(req, res, next) {
-    Donation.find()
+    Donation.find({}, 'person')
+    .populate('person')
     .sort([['lastName', 'ascending']])
-    .execute(function (err, list_donation) {
+    .execute(function (err, list_donations) {
         if (err) {return next(err)};
-        res.render('donation_list', { title: 'All Donation', donation_list: list_donation});
+        res.render('donation_list', { title: 'Donation List', donation_list: list_donations});
     });
 // res.send('NOT IMPLEMENTED: donation list');
 };
 
 // Display detail page for a specific donation.
 exports.donation_read = function(req, res, next) {
-    Donation.find()
+    async.parallel({
+        donation: function(callback) {
+            Donation.findById(req.params.id)
+            .populate('person')
+            .exec(callback)
+        },
+        person: function(callback) {
+            Donation.find({ 'person': req.params.id })
+            .exec(callback);
+        },
     .exec(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
@@ -22,9 +38,7 @@ exports.donation_read = function(req, res, next) {
             return next(err)
         };
         console.log(results);
-        res.render('donation_read', {
-            title: "Donation Details",
-            donation: results})
+        res.render('donation_read', { title: "Donation Details", donation: results})
     })
 // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
 };
@@ -33,7 +47,7 @@ exports.donation_read = function(req, res, next) {
 exports.donation_create_get = function(req, res) {
     async.parallel({
         person: function(callback) {
-            Person.find({},"xx").exec(callback);        
+            Person.find({},'/users/person').exec(callback);        
         },
         function (err, results) {
             if (err) {return next(err);}
@@ -50,8 +64,7 @@ exports.donation_create_get = function(req, res) {
 // Handle donation create on POST.
 exports.donation_create_post = [
     //Validation
-    body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
-    body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
+    body('person').isLength({min: 1}).trim().withMessage('Missing Person'),   
     body('donationType').isLength({min: 1}).trim().withMessage('Missing Donation Type'),
     body('donationDate').isLength({min: 1}).trim().withMessage('Missing Donation Date'),
     body('donationAmount').isLength({min: 1}).trim().withMessage('Missing Donation Amount'),
@@ -71,8 +84,7 @@ exports.donation_create_post = [
         }
         else {
             var donation = new Donation({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
+                person: req.body.person,
                 donationType: req.body.donationType,
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
@@ -90,14 +102,13 @@ exports.donation_create_post = [
 
 // Display donation delete form on GET.
 exports.donation_delete_get = function(req, res, next) {
-    Donation.findById(req.params.id).exec(function(err,results) {
+    Donation.findById(req.params.id)
+    .populate('person')
+    .exec(function(err,results) {
         if (err) {return next(err)};
         //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/url/xxx')};
-        res.render('donation_delete', {
-            title: 'Delete Donation',
-            donation: results
-        });
+        if (results==null) {res.redirect('/users/donation')};
+        res.render('donation_delete', { title: 'Delete Donation', donation: results });
     });
 // res.send('NOT IMPLEMENTED: donation delete GET');
 };
@@ -107,7 +118,7 @@ exports.donation_delete_post = function(req, res, next) {
     Donation.findByIdAndDelete(req.params.id, function deleteDonation(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/index/xxx');
+        res.redirect('/users/donation');
     });
 // res.send('NOT IMPLEMENTED: donation delete POST');
 };
@@ -116,25 +127,30 @@ exports.donation_delete_post = function(req, res, next) {
 exports.donation_update_get = function(req, res) {
     async.parallel({
         donation: function(callback) {
-            Donation.findById(req.params.id).exec(callback);
-        },        
+            Donation.findById(req.params.id)
+            .populate('person')
+            .exec(callback);
+        },  
+        person: function(callback) {
+            Person.find(callback);
+        },      
     }),
     function (err,res, results) {
-        if (err) {return next(err);
-        res.render('donation_update', {
-            title: 'Update Donation',
-            donation: results.donation
-        });
-        };
-    }
+        if (err) {return next(err); }
+        if (results.donation==null) {
+            var err = new Error('Donation not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('donation_update', { title: 'Update Donation', donation: results.donation, person: results.person})
+    };    
 // res.send('NOT IMPLEMENTED: donation update GET');
 };
 
 // Handle donation update on POST.
 exports.donation_update_post = [
     //Validation
-    body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
-    body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
+    body('person').isLength({min: 1}).trim().withMessage('Missing Person'),   
     body('donationType').isLength({min: 1}).trim().withMessage('Missing Donation Type'),
     body('donationDate').isLength({min: 1}).trim().withMessage('Missing Donation Date'),
     body('donationAmount').isLength({min: 1}).trim().withMessage('Missing Donation Amount'),
@@ -156,8 +172,7 @@ exports.donation_update_post = [
         }
         else {
             var donation = new Donation({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
+                person: req.body.person,
                 donationType: req.body.donationType,
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
