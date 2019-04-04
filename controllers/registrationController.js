@@ -187,12 +187,12 @@ exports.registration_update_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.schedule==null) {
+        if (results.registration==null) {
             var err = new Error('Registration not found');
             err.status = 404;
             return next(err);
         }
-        res.render('schedule_form', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
+        res.render('registration_form', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
     })
 };
 
