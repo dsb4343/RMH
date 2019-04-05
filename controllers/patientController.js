@@ -1,16 +1,14 @@
 var Patient = require('../objects/Patient');
 var Person = require('../objects/Person');
 
-var asyce = require('async');
+var async = require('async');
 
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-
 // Display list of all patients.
 exports.patient_list = function(req, res, next) {
-    Patient.find({}, 'person')
-    .populate('person')
+    Patient.find()
     .sort([['lastName', 'ascending']])
     .execute(function (err, list_patients) {
         if (err) {return next(err)};
@@ -22,25 +20,19 @@ exports.patient_list = function(req, res, next) {
 
 // Display detail page for a specific patient.
 exports.patient_read = function(req, res, next) {
-    async.parallel({
-        patient: function(callback) {
-            Patient.findbyId(req.params.id)
-            .populate('person')
-            .exec.(callback)
-        },
-        person: function(callback) {
-            Patient.find({ 'person': req.params.id})
-            .exec(callback);
-        },
-        .exec(function (err, results) {
-            if (err) {return next(err)};
-            if (results == null) {
-                var err = new Error('Patient not found');
-                err.status = 404;
-                return next(err)
-            };
-        
-    })
+    Patient.find()
+    .exec(function (err, results) {
+        if (err) {return next(err)};
+        if (results == null) {
+            var err = new Error('Patient not found');
+            err.status = 404;
+            return next(err)
+        };
+        res.render('patient_read', {
+            title: "Patient Detail",
+            patient: results})
+        })
+
 //  res.send('NOT IMPLEMENTED: patient detail: ' + req.params.id);
 };
 
@@ -48,7 +40,7 @@ exports.patient_read = function(req, res, next) {
 exports.patient_create_get = function(req, res) {
     async.parallel({
         patient: function(callback) {
-            Patient.find({},'../users/patient')exec.(callback);
+            Patient.find({},'../users/patient').exec(callback);
         },
         function (err, results) {
             if (err) {return next(err)};
@@ -97,9 +89,11 @@ exports.patient_delete_get = function(req, res, next) {
     Patient.findbyId(req.params.id)
     .populate('person')
     .exec(function(err,results) {
-        if(err) {return, next(err)};
+        if(err) {return next(err)};
         if(results==null) {res.redirect('../users/patients')};
-        res.render('patient_delete', { title: 'Delete Patient', patient: results });
+        res.render('patient_delete', { 
+            title: 'Delete Patient', 
+            patient: results });
     });
 // res.send('NOT IMPLEMENTED: patient delete GET');
 };
