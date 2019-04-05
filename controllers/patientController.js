@@ -65,7 +65,7 @@ exports.patient_create_get = function(req, res) {
 exports.patient_create_post = [
     //Validation
     body('person').isLength({min: 1}).trim().withMessage('Missing Person'),
-    body('location').isLength({min: 1}).trim().withMessage('Missing Location'),
+    body('patientLocation').isLength({min: 1}).trim().withMessage('Missing Location'),
 
     sanitizeBody('*').trim().escape(),
 
@@ -144,7 +144,7 @@ exports.patient_update_get = function(req, res) {
 exports.patient_update_post = [
     //Validation
     body('person').isLength({min: 1}).trim().withMessage('Missing Person'),   
-    body('location').isLength({min: 1}).trim().withMessage('Missing Location'),
+    body('patientLocation').isLength({min: 1}).trim().withMessage('Missing Location'),
 
     
     sanitizeBody('*').trim().escape(),
