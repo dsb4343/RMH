@@ -12,9 +12,25 @@ exports.room_list = function(req, res, next) {
 };
 
 // Display detail page for a specific room.
-exports.room_read = function(req, res) {
-    res.send('NOT IMPLEMENTED: room detail: ' + req.params.id);
-};
+exports.room_read = function(req, res, next) {
+    Room.find()
+    .populate('room')
+    .exec(function (err, results) {
+        if (err) {return next(err)};
+        if (results == null) {
+            var err = new Error('Room not found');
+            err.status = 404;
+            return next(err)
+        };
+        console.log(results);
+        res.render('room_read', {
+            title: "Room Details",
+            room: results})
+        })       
+
+   // res.send('NOT IMPLEMENTED: room detail: ' + req.params.id);
+    };
+
 
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
