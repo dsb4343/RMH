@@ -1,6 +1,7 @@
 var Person = require('../objects/Person');
 
 // Display list of all persons.
+
 exports.person_list = function(req, res, next) {
     Person.find()
     .sort([['lastName', 'ascending']])

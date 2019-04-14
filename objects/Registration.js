@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var Registration.Schema = new Schema ({
+var RegistrationSchema = new Schema ({
     guest: {type: Schema.Types.ObjectId, ref: 'Guest'},
     patient: {type: Schema.Types.ObjectId, ref: 'Patient'},
     staff: {type: Schema.Types.ObjectId, ref: 'Staff'},
