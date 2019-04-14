@@ -148,8 +148,8 @@ exports.registration_delete_get = function(req, res, next) {
     .exec(function (err, registration) {
         if (err) { return next(err); }
         if(registration==null) {
-            res.redirect('/index/registration');
-        };
+            res.redirect('/admin/registration');
+        }
         res.render('registration_delete', { title: 'Delete Registration', registration: registration });
     });
 };
@@ -158,7 +158,7 @@ exports.registration_delete_get = function(req, res, next) {
 exports.registration_delete_post = function(req, res, next) {
     registration.findByIdAndRemove(req.body.id, function deleteregistration(err) {
         if (err) { return next(err); }
-        res.redirect('/index/registration');
+        res.redirect('/admin/registration');
     })
 };
 
@@ -166,7 +166,7 @@ exports.registration_delete_post = function(req, res, next) {
 exports.registration_update_get = function(req, res, next) {
     async.parallel({ 
         registration:function(callback) {
-            scjedi;e/fomdBuOd(req.params.id)
+            Registration.FindById(req.params.id)
             .populate('guest')
             .populate('patient')
             .populate('staff')
@@ -187,12 +187,12 @@ exports.registration_update_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.schedule==null) {
+        if (results.registration==null) {
             var err = new Error('Registration not found');
             err.status = 404;
             return next(err);
         }
-        res.render('schedule_form', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
+        res.render('registration_form', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
     })
 };
 

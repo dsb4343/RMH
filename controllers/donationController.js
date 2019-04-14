@@ -1,4 +1,5 @@
 var Donation = require('../objects/Donation');
+
 var Person = require('../objects/Person');
 
 var async = require('async');
@@ -31,20 +32,21 @@ exports.donation_read = function(req, res, next) {
             .exec(callback);
         },
         function (err, results) {
-            if (err) {return next(err)};
-            if (results == null) {
-                var err = new Error('Donation not found');
-                err.status = 404;
-                return next(err)
-            };
-            console.log(results);
-            res.render('donation_read', { title: "Donation Details", donation: results})
-        }
+        if (err) {return next(err)};
+        if (results == null) {
+            var err = new Error('Donation not found');
+            err.status = 404;
+            return next(err)
+        };
+        console.log(results);
+        res.render('donation_read', { title: "Donation Details", donation: results})
+    }
 // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
 });
 
 // Display donation create form on GET.
 exports.donation_create_get = function(req, res) {
+
     async.parallel({
         person: function(callback) {
             Person.find({},'/users/person').exec(callback);        
@@ -125,6 +127,7 @@ exports.donation_delete_post = function(req, res, next) {
 
 // Display donation update form on GET.
 exports.donation_update_get = function(req, res) {
+
     async.parallel({
         donation: function(callback) {
             Donation.findById(req.params.id)
