@@ -7,6 +7,7 @@ const {body, validationResult} = require('express-validator/check');
 const {sanitizeBody} = require('express-validator/filter');
 
 // Display list of all persons.
+
 exports.person_list = function(req, res, next) {
     Person.find()
     .sort([['lastName', 'ascending']])
