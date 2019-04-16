@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Object
-var PersonSchema = new Schema({
+var StaffSchema = new Schema({
     employeeStatus: {type: String, max: 10},
     startDate: {type: String, },
     endDate: {type: String, }

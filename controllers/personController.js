@@ -187,8 +187,8 @@ exports.person_update_post = [
                 state: req.body.state,
                 zip: req.body.zip,
                 emergencyContact: req.body.emergencyContact,
-                emergencyPhone: req.body.emergencyPhone
-                _id:req.params.id
+                emergencyPhone: req.body.emergencyPhone,
+                id:req.params.id
             });
         };
     }

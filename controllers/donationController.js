@@ -42,7 +42,7 @@ exports.donation_read = function(req, res, next) {
         res.render('donation_read', { title: "Donation Details", donation: results})
     }
 // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
-};
+    ),
 
 // Display donation create form on GET.
 exports.donation_create_get = function(req, res) {
@@ -180,8 +180,8 @@ exports.donation_update_post = [
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
                 AdoptionDate: req.body.AdoptionDate,
-                AdoptionMessage: req.body.AdoptionMessage  
-                _id:req.params.id
+                AdoptionMessage: req.body.AdoptionMessage,  
+                id:req.params.id
             });
         };
     }
