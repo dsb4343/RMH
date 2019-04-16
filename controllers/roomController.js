@@ -27,9 +27,8 @@ exports.room_read = function(req, res, next) {
             title: "Room Details",
             room: results})
         })       
-
    // res.send('NOT IMPLEMENTED: room detail: ' + req.params.id);
-    };
+};
 
 
 // Display room create form on GET.

@@ -151,7 +151,6 @@ exports.patient_update_post = [
                 _id: patient._id,
                 patient: patient,
                 errors: errors.array()
-            
             });
         return;
         }

@@ -41,13 +41,13 @@ exports.person_read = function(req, res, next) {
 exports.person_create_get = function(req, res) {
     async.parallel({
         guest: function(callback) {
-            Guest.find({},"xx").exec(callback); //not sure what to find
+            Guest.find({},"guest").exec(callback); //not sure what to find
         },
         patient: function(callback) {
-            Patient.find({},"xx").exec(callback); //not sure what to find
+            Patient.find({},"patient").exec(callback); //not sure what to find
         },
         staff: function(callback) {
-            Staff.find({},"xx").exec(callback); //not sure what to find
+            Staff.find({},"staff").exec(callback); //not sure what to find
         },
         function (err, results) {
             if (err) {return next(err);}
