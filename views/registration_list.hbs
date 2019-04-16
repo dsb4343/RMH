@@ -1,0 +1,14 @@
+<body>
+<ul>
+{{#if registration_list}}
+{{#each registration_list}}
+<li><a href=“/user/Registration/{{_id}}>{{name}}{{date}}</a> | <a href=“/user/
+Registration{{_id}}/update”>Update</a> <a href=“/user/Registration/{{_id}}/
+delete”>Delete</a></li>
+{{/each}}
+{{else}}
+<h1>No Registrations</h1>
+{{/if}}
+</ul>
+<a href=“/user/registration/create”>New Registration</a>
+</body>

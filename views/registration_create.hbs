@@ -1,0 +1,34 @@
+<body></body>
+<form action="/Registration/Create" method="POST">
+    <label for="guest">Guest:</label>
+        <select name="guest" required="true">
+            <option value="">Select One</option>
+            {{#each guest}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
+        </select><br>
+    <label for="patient">Patient:</label>
+        <select name="patient" required="true">
+            <option value="">Select One</option>
+            {{#each patient}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
+        </select><br> 
+    <label for="staff">Staff:</label>
+        <select name="staff" required="true">
+            <option value="">Select One</option>
+            {{#each staff}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
+        </select><br>
+    <label for="room">Room:</label>
+        <select name="room" required="true">
+            <option value="">Select One</option>
+            {{#each room}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
+        </select><br>
+    <label for="checkIn">Checked In: </label>
+        <input name="checkIn" type="text" id="check in"><br> 
+    <label for="checkOut">Checked Out: </label>
+        <input name="checkOut" type="text" id="check out"><br>
+    <label for="numbKeys">Number of Keys: </label>
+        <input name="numbKeys" type="text" id="number of keys"><br>
+    <label for="loans">Items on Loan: </label>
+        <input name="loans" type="text" id="loans"><br>
+    <label for="comments">Comments: </label>
+        <input name="comments" type="text" id="comments"><br>    
+    </form>
+    </body>
