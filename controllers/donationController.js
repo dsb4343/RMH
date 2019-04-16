@@ -31,7 +31,7 @@ exports.donation_read = function(req, res, next) {
             Donation.find({ 'person': req.params.id })
             .exec(callback);
         },
-    .exec(function (err, results) {
+        function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Donation not found');
@@ -40,9 +40,9 @@ exports.donation_read = function(req, res, next) {
         };
         console.log(results);
         res.render('donation_read', { title: "Donation Details", donation: results})
-    })
+    }
 // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
-};
+});
 
 // Display donation create form on GET.
 exports.donation_create_get = function(req, res) {
@@ -180,10 +180,10 @@ exports.donation_update_post = [
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
                 AdoptionDate: req.body.AdoptionDate,
-                AdoptionMessage: req.body.AdoptionMessage  
+                AdoptionMessage: req.body.AdoptionMessage,  
                 _id:req.params.id
             });
         };
     }
 // res.send('NOT IMPLEMENTED: donation update POST');
-];
+]};
