@@ -5,7 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Object
-var PersonSchema = new Schema({
+var StaffSchema = new Schema({
+    lastName: {type: String, max: 100, required: true},
+    firstName: {type: String, max: 100, required: true},
+    phone: {type: Number, max: 10},
     employeeStatus: {type: String, max: 10},
     startDate: {type: String, },
     endDate: {type: String, }

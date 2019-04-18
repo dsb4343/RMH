@@ -13,15 +13,15 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.guest_list = function (req, res, next) {
     Guest.find({}, 'guest')
         .populate('guest')
-        .exec(function (err, list_guests) {
-            if (err) { return next(err); }
+        .execute(function (err, list_guests) {
+            if (err) { return next(err)};
             res.render('guest_list', { title: 'Guest List', guest_list: list_guests });
-        })
-
+        });
+};
 // Display detail page for a specific guest.
 exports.guest_read = function(req, res, next) {
     Guest.find()
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if(err) {return next(err)};
         if (results == null){
             var err = new Error('Guest not found');
@@ -29,7 +29,7 @@ exports.guest_read = function(req, res, next) {
             return next(err)
         };
     })
-
+};
 // Display guest create form on GET.
 exports.guest_create_get = function (req, res, next) {
     async.parallel({
@@ -39,7 +39,7 @@ exports.guest_create_get = function (req, res, next) {
         if (err) { return next(err); }
         res.render('registration_form', { title: 'Create Registration', patients: results.patients, guests: results.guests, staffs: results.staffs, rooms: results.rooms })
     });
-
+};
 // Handle guest create on POST.
     exports.guest_create_post = [
         //Validation
@@ -86,23 +86,23 @@ exports.guest_delete_get = function (req, res, next) {
     Guest.findById(req.params.id).exec(function (err, results) {
         if (err) { return next(err) };
         //redirect will need updated url address-----------
-        if (results == null) { res.redirect('/url/xxx') };
+        if (results == null) { res.redirect('/users/guest') };
         res.render('guest_delete', {
             title: 'Delete Guest',
             Guest: results
         });
     });
     // res.send('NOT IMPLEMENTED: Guest delete GET');
-
+};
 // Handle guest delete on POST.
 exports.guest_delete_post = function (req, res, next) {
     Guest.findByIdAndDelete(req.params.id, function deleteGuest(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/index/xxx');
+        res.redirect('/users/guest');
     });
     // res.send('NOT IMPLEMENTED: Guest delete POST');
-
+};
 // Display guest update form on GET.
 exports.guest_update_get = function (req, res) {
     async.parallel({
@@ -111,16 +111,14 @@ exports.guest_update_get = function (req, res) {
         },
     }),
         function (err, res, results) {
-            if (err) {
-                return next(err);
+            if (err) { return next(err) };
                 res.render('guest_update', {
                     title: 'Update Guest',
                     guest: results.guest
                 });
-            };
-        }
+        };
+};
     // res.send('NOT IMPLEMENTED: guest update GET');
-
 // Handle guest update on POST.
 exports.guest_update_post = [
     //Validation
@@ -142,7 +140,7 @@ exports.guest_update_post = [
                 title: 'Update Guest Failed',
                 _id: guest._id,
                 guest: guest,
-                errors: errors.array(),
+                errors: errors.array()
             });
         return;
         }

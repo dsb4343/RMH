@@ -32,18 +32,18 @@ exports.donation_read = function(req, res, next) {
             .exec(callback);
         },
         function (err, results) {
-        if (err) {return next(err)};
-        if (results == null) {
-            var err = new Error('Donation not found');
-            err.status = 404;
-            return next(err)
-        };
-        console.log(results);
-        res.render('donation_read', { title: "Donation Details", donation: results})
-    }
-// res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
-});
-
+            if (err) {return next(err)};
+            if (results == null) {
+                var err = new Error('Donation not found');
+                err.status = 404;
+                return next(err)
+            };
+            console.log(results);
+            res.render('donation_read', { title: "Donation Details", donation: results})
+        }
+    // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
+    });
+};
 // Display donation create form on GET.
 exports.donation_create_get = function(req, res) {
 
@@ -56,7 +56,7 @@ exports.donation_create_get = function(req, res) {
             console.log(results);
             res.render('donation_create', {
                 title: 'New Donation',
-                person: results.person,                
+                person: results.person               
             });
         }
     })
@@ -106,10 +106,10 @@ exports.donation_create_post = [
 exports.donation_delete_get = function(req, res, next) {
     Donation.findById(req.params.id)
     .populate('person')
-    .exec(function(err,results) {
+    .execute(function(err,results) {
         if (err) {return next(err)};
         //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/users/donation')};
+        if (results==null) {res.redirect('/admin/donation')};
         res.render('donation_delete', { title: 'Delete Donation', donation: results });
     });
 // res.send('NOT IMPLEMENTED: donation delete GET');
@@ -120,7 +120,7 @@ exports.donation_delete_post = function(req, res, next) {
     Donation.findByIdAndDelete(req.params.id, function deleteDonation(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/users/donation');
+        res.redirect('/admin/donation');
     });
 // res.send('NOT IMPLEMENTED: donation delete POST');
 };
@@ -186,4 +186,4 @@ exports.donation_update_post = [
         };
     }
 // res.send('NOT IMPLEMENTED: donation update POST');
-]};
+];

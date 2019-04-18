@@ -21,7 +21,7 @@ exports.patient_list = function(req, res, next) {
 // Display detail page for a specific patient.
 exports.patient_read = function(req, res, next) {
     Patient.find()
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Patient not found');
@@ -88,9 +88,9 @@ exports.patient_create_post = [
 exports.patient_delete_get = function(req, res, next) {
     Patient.findbyId(req.params.id)
     .populate('person')
-    .exec(function(err,results) {
+    .execute(function(err,results) {
         if(err) {return next(err)};
-        if(results==null) {res.redirect('../users/patients')};
+        if(results==null) {res.redirect('../users/patient')};
         res.render('patient_delete', { 
             title: 'Delete Patient', 
             patient: results });
@@ -151,7 +151,6 @@ exports.patient_update_post = [
                 _id: patient._id,
                 patient: patient,
                 errors: errors.array()
-            
             });
         return;
         }
