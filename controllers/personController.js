@@ -1,8 +1,9 @@
 var Person = require('../objects/Person');
-var Guest = require('../objects/Guest');
-var Staff = require('../objects/Staff');
-var Patient = require('../objects/Patient');
-var async = require('async');
+//var Donation = require('../objects/Donation');
+//var Guest = require('../objects/Guest');
+//var Staff = require('../objects/Staff');
+//var Patient = require('../objects/Patient');
+//var async = require('async');
 const {body, validationResult} = require('express-validator/check');
 const {sanitizeBody} = require('express-validator/filter');
 
@@ -20,46 +21,42 @@ exports.person_list = function(req, res, next) {
 
 // Display detail page for a specific person.
 exports.person_read = function(req, res, next) {
-    Person.find()
-    .populate('person')
-    .exec(function (err, results) {
-        if (err) {return next(err)};
-        if (results == null) {
-            var err = new Error('Person not found');
-            err.status = 404;
-            return next(err)
-        };
-        console.log(results);
-        res.render('person_read', {
-            title: "Person Details",
-            person: results})
-    })
+    async.parallel({
+        person: function(callback){
+            Person.find({}, 'person')
+            .exec(callback);
+        },
+        donation: function(callback){
+            Donation.find({}, 'donation')
+            .exec(callback);
+        },
+        function (err, results) {
+            if (err) {return next(err)};
+            console.log(results);
+            res.render('person_read', {
+                title: 'Person Details',
+                person: results.person,
+                donation: results.donation
+            })
+        }
+    });
     //res.send('NOT IMPLEMENTED: person detail: ' + req.params.id);
 };
 
 // Display person create form on GET.
 exports.person_create_get = function(req, res) {
-    async.parallel({
-        guest: function(callback) {
-            Guest.find({},"guest").exec(callback); //not sure what to find
-        },
-        patient: function(callback) {
-            Patient.find({},"patient").exec(callback); //not sure what to find
-        },
-        staff: function(callback) {
-            Staff.find({},"staff").exec(callback); //not sure what to find
-        },
-        function (err, results) {
-            if (err) {return next(err);}
-            console.log(results);
-            res.render('person_create', {
-                title: 'New Person',
-                guest: results.guest,
-                patient: result.patient,
-                staff: result.patient
-            });
+    Person.findById(req.params.id)
+    .execute(function (err, results){
+        if (err) {return next(err);}
+        if (results==null) {
+            res.redirect('/person/create');
         }
-    })
+        console.log(results);
+        res.render('person_create', {
+            title: 'New Person',
+            person: person
+        });
+    });
     //res.send('NOT IMPLEMENTED: person create GET');
 };
 
@@ -69,11 +66,11 @@ exports.person_create_post = [
     body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
-    body('address').isLength({min: 1}).trim().withMessage('Missing Address'),
+    body('phone').isLength({min: 10}).trim().withMessage('Missing Phone Number'),
     sanitizeBody('firstName').trim().escape(),
     sanitizeBody('lastName').trim().escape(),
+    sanitizeBody('phone').trim().escape(),
     sanitizeBody('email').trim().escape(),
-    sanitizeBody('address').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -90,7 +87,8 @@ exports.person_create_post = [
                 lastName: req.body.lastName,
                 email: req.body.email,
                 phone: req.body.phone,
-                street: req.body.street,
+                cellPhone: req.body.cellPhone,
+                homeAdress: req.body.homeAdress,
                 city: req.body.city,
                 state: req.body.state,
                 zip: req.body.zip,
@@ -99,7 +97,7 @@ exports.person_create_post = [
             });
             person.save(function(err) {
                 if (err) {return next(err)};
-                res.redirect(participant.url);
+                res.redirect(person.url);  //redirect ????
             });
         }
     }
@@ -110,13 +108,9 @@ exports.person_create_post = [
 exports.person_delete_get = function(req, res, next) {
     Person.findById(req.params.id)
     .populate('person')
-    .populate('guest')
-    .populate('patient')
-    .populate('staff')
-    .exec(function(err,results) {
+    .execute(function(err,results) {
         if (err) {return next(err)};
-        //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/url/xxx')};
+        if (results==null) {res.redirect('/person')};
         res.render('person_delete', {
             title: 'Delete Person',
             person: results
@@ -127,45 +121,25 @@ exports.person_delete_get = function(req, res, next) {
 
 // Handle person delete on POST.
 exports.person_delete_post = function(req, res, next) {
-    Person.findByIdAndDelete(req.params.id, function deletePerson(err) {
+    Person.findByIdAndDelete(req.params.id, 
+        function deletePerson(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/user/Person');
+        res.redirect('/users/person');
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
 };
 
 // Display person update form on GET.
 exports.person_update_get = function(req, res) {
-    async.parallel({
-        person: function(callback) {
-            Person.findById(req.params.id)
-            .populate('person')
-            .populate('guest')
-            .populate('patient')
-            .populate('staff')
-            .exec(callback);
-        },
-        guest: function(callback) {
-            Guest.find({},"xx").exec(callback); //not sure what to find
-        },
-        patient: function(callback) {
-            Patient.find({},"xx").exec(callback);  //not sure what to find
-        },
-        staff: function(callback) {
-            Staff.find({},"xx").exec(callback);  //not sure what to find
-        },
-    }),
-    function (err,res, results) {
+        Person.findById(req.params.id)
+        .populate('person')
+        .exec(callback);
         if (err) {return next(err)};
         res.render('person_update', {
             title: 'Update Person',
-            person: results.person,
-            guest: results.guest,
-            patient: results.patient,
-            staff: results.staff
+            person: results.person
         });
-    };
     //res.send('NOT IMPLEMENTED: person update GET');
 };
 
@@ -175,11 +149,11 @@ exports.person_update_post = [
     body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
-    body('address').isLength({min: 1}).trim().withMessage('Missing Address'),
+    body('phone').isLength({min: 10}).trim().withMessage('Missing Phone Number'),
     sanitizeBody('firstName').trim().escape(),
     sanitizeBody('lastName').trim().escape(),
+    sanitizeBody('phone').trim().escape(),
     sanitizeBody('email').trim().escape(),
-    sanitizeBody('address').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -198,7 +172,8 @@ exports.person_update_post = [
                 lastName: req.body.lastName,
                 email: req.body.email,
                 phone: req.body.phone,
-                street: req.body.street,
+                cellPhone: req.body.cellPhone,
+                homeAdress: req.body.homeAdress,
                 city: req.body.city,
                 state: req.body.state,
                 zip: req.body.zip,

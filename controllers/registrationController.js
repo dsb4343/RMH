@@ -13,7 +13,7 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.registration_list = function(req, res, next) {
     Registration.find({}, 'guest')
     .populate('guest')
-    .exec(function (err, list_registrations){
+    .execute(function (err, list_registrations){
         if (err) {return next(err); }
         res.render('registration_list', {title: 'Registration List', registration_list: list_registrations });
     });
@@ -145,10 +145,10 @@ exports.registration_delete_get = function(req, res, next) {
     .populate('patient')
     .populate('staff')
     .populate('room')
-    .exec(function (err, registration) {
+    .execute(function (err, registration) {
         if (err) { return next(err); }
         if(registration==null) {
-            res.redirect('/admin/registration');
+            res.redirect('/users/registration');
         }
         res.render('registration_delete', { title: 'Delete Registration', registration: registration });
     });
@@ -158,7 +158,7 @@ exports.registration_delete_get = function(req, res, next) {
 exports.registration_delete_post = function(req, res, next) {
     registration.findByIdAndRemove(req.body.id, function deleteregistration(err) {
         if (err) { return next(err); }
-        res.redirect('/admin/registration');
+        res.redirect('/users/registration');
     })
 };
 

@@ -15,7 +15,7 @@ exports.room_list = function(req, res, next) {
 exports.room_read = function(req, res, next) {
     Room.find()
     .populate('room')
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Room not found');
