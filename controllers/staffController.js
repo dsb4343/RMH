@@ -2,12 +2,31 @@ var Staff = require('../objects/Staff');
 
 // Display list of all staffs.
 exports.staff_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff list');
+    Staff.find()
+    .populate('staff')
+    .exec(function (err, list_staffinstances) {
+      if (err) { return next(err); }
+      // Successful, so render
+      res.render('staffinstance_list', { title: 'All Staff', staffinstance_list: list_staffinstances });
+    });
 };
 
 // Display detail page for a specific staff.
 exports.staff_read = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff detail: ' + req.params.id);
+
+   Staff.findById(req.params.id)
+    .exec(function (err, results) {
+        if (err) {return next(err)};
+        if (results == null) {
+            var err = new Error('Staff is not found');
+            err.status = 404;
+            return next(err)
+        };
+        console.log(results);
+        res.render('staff_read', {
+            title: "Staff Details",
+            staff: results})
+    })
 };
 
 // Display staff create form on GET.
