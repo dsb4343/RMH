@@ -36,7 +36,7 @@ exports.staff_create_get = function(req, res) {
 
 // Handle staff create on POST.
 exports.staff_create_post = function(req, res) {
-
+    res.send('NOT IMPLEMENTED: staff create POST');
   //Validation
   body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
   body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
