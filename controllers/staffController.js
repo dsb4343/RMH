@@ -4,7 +4,7 @@ var Staff = require('../objects/Staff');
 exports.staff_list = function(req, res) {
     Staff.find()
     .populate('staff')
-    .exec(function (err, list_staffinstances) {
+    .execute(function (err, list_staffinstances) {
       if (err) { return next(err); }
       // Successful, so render
       res.render('staffinstance_list', { title: 'All Staff', staffinstance_list: list_staffinstances });
@@ -15,7 +15,7 @@ exports.staff_list = function(req, res) {
 exports.staff_read = function(req, res) {
 
    Staff.findById(req.params.id)
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Staff is not found');

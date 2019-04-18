@@ -22,7 +22,7 @@ exports.person_list = function(req, res, next) {
 exports.person_read = function(req, res, next) {
     Person.find()
     .populate('person')
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Person not found');
@@ -113,10 +113,10 @@ exports.person_delete_get = function(req, res, next) {
     .populate('guest')
     .populate('patient')
     .populate('staff')
-    .exec(function(err,results) {
+    .execute(function(err,results) {
         if (err) {return next(err)};
         //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/url/xxx')};
+        if (results==null) {res.redirect('/users/person')};
         res.render('person_delete', {
             title: 'Delete Person',
             person: results
@@ -130,7 +130,7 @@ exports.person_delete_post = function(req, res, next) {
     Person.findByIdAndDelete(req.params.id, function deletePerson(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/user/Person');
+        res.redirect('/users/person');
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
 };

@@ -13,15 +13,15 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.guest_list = function (req, res, next) {
     Guest.find({}, 'guest')
         .populate('guest')
-        .exec(function (err, list_guests) {
-            if (err) { return next(err); }
+        .execute(function (err, list_guests) {
+            if (err) { return next(err)};
             res.render('guest_list', { title: 'Guest List', guest_list: list_guests });
-        })
+        });
 };
 // Display detail page for a specific guest.
 exports.guest_read = function(req, res, next) {
     Guest.find()
-    .exec(function (err, results) {
+    .execute(function (err, results) {
         if(err) {return next(err)};
         if (results == null){
             var err = new Error('Guest not found');
@@ -86,7 +86,7 @@ exports.guest_delete_get = function (req, res, next) {
     Guest.findById(req.params.id).exec(function (err, results) {
         if (err) { return next(err) };
         //redirect will need updated url address-----------
-        if (results == null) { res.redirect('/url/xxx') };
+        if (results == null) { res.redirect('/users/guest') };
         res.render('guest_delete', {
             title: 'Delete Guest',
             Guest: results
@@ -99,7 +99,7 @@ exports.guest_delete_post = function (req, res, next) {
     Guest.findByIdAndDelete(req.params.id, function deleteGuest(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/index/xxx');
+        res.redirect('/users/guest');
     });
     // res.send('NOT IMPLEMENTED: Guest delete POST');
 };
