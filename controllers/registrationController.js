@@ -54,7 +54,7 @@ exports.registration_read = function(req, res, next) {
             err.status = 404;
             return next (err);
         }
-        res.render('registration_detail', { title: 'Registration Detail', registration: results.registration, patient: results.patient, guest: results.guest, staff: results.staff, room: results.room });
+        res.render('registration_read', { title: 'Registration Detail', registration: results.registration, patient: results.patient, guest: results.guest, staff: results.staff, room: results.room });
     })
 };
 
@@ -75,7 +75,7 @@ exports.registration_create_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('registration_form', { title: 'Create Registration', patients: results.patients, guests: results.guests, staffs: results.staffs, rooms: results.rooms})
+        res.render('registration_create', { title: 'Create Registration', patients: results.patients, guests: results.guests, staffs: results.staffs, rooms: results.rooms})
     });
 };
 
@@ -125,7 +125,7 @@ exports.registration_create_post = [
                 
             }, function (err, results) {
                 if (err) { return next(err); }
-                res.render('registration_form', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
+                res.render('registration_create', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
             return;
         }
@@ -192,7 +192,7 @@ exports.registration_update_get = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('registration_form', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
+        res.render('registration_create', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
     })
 };
 
@@ -243,7 +243,7 @@ exports.registration_update_post = [
                 
             }, function (err, results) {
                 if (err) { return next(err); }
-                res.render('registration_form', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
+                res.render('registration_create', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
             return;
         }
