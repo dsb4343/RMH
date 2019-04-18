@@ -21,7 +21,6 @@ exports.person_list = function(req, res, next) {
 
 // Display detail page for a specific person.
 exports.person_read = function(req, res, next) {
-<<<<<<< HEAD
     async.parallel({
         person: function(callback){
             Person.find({}, 'person')
@@ -30,36 +29,6 @@ exports.person_read = function(req, res, next) {
         donation: function(callback){
             Donation.find({}, 'donation')
             .exec(callback);
-=======
-    Person.find()
-    .populate('person')
-    .execute(function (err, results) {
-        if (err) {return next(err)};
-        if (results == null) {
-            var err = new Error('Person not found');
-            err.status = 404;
-            return next(err)
-        };
-        console.log(results);
-        res.render('person_read', {
-            title: "Person Details",
-            person: results})
-    })
-    //res.send('NOT IMPLEMENTED: person detail: ' + req.params.id);
-};
-
-// Display person create form on GET.
-exports.person_create_get = function(req, res) {
-    async.parallel({
-        guest: function(callback) {
-            Guest.find({},"guest").exec(callback); //not sure what to find
-        },
-        patient: function(callback) {
-            Patient.find({},"patient").exec(callback); //not sure what to find
-        },
-        staff: function(callback) {
-            Staff.find({},"staff").exec(callback); //not sure what to find
->>>>>>> master
         },
         function (err, results) {
             if (err) {return next(err)};
@@ -139,19 +108,9 @@ exports.person_create_post = [
 exports.person_delete_get = function(req, res, next) {
     Person.findById(req.params.id)
     .populate('person')
-<<<<<<< HEAD
     .execute(function(err,results) {
         if (err) {return next(err)};
         if (results==null) {res.redirect('/person')};
-=======
-    .populate('guest')
-    .populate('patient')
-    .populate('staff')
-    .execute(function(err,results) {
-        if (err) {return next(err)};
-        //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/users/person')};
->>>>>>> master
         res.render('person_delete', {
             title: 'Delete Person',
             person: results
@@ -165,12 +124,8 @@ exports.person_delete_post = function(req, res, next) {
     Person.findByIdAndDelete(req.params.id, 
         function deletePerson(err) {
         if (err) return next(err);
-<<<<<<< HEAD
-        res.redirect('/user/Person');
-=======
         //redirect will need updated url address--------------
         res.redirect('/users/person');
->>>>>>> master
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
 };
