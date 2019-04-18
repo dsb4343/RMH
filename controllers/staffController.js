@@ -36,7 +36,40 @@ exports.staff_create_get = function(req, res) {
 
 // Handle staff create on POST.
 exports.staff_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: staff create POST');
+
+  //Validation
+  body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
+  body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
+  body('phone').isLength({min: 1}).trim().withMessage('Missing Phone Number'),
+  sanitizeBody('lastName').trim().escape(),
+  sanitizeBody('firstName').trim().escape(),
+  sanitizeBody('phone').trim().escape(),
+
+  (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          res.render('staff_create', {
+              title: 'New Participant Error',
+              errors: errors.array()
+          });
+          return;
+      }
+      else {
+          var staff = new Staff({
+            lastName: req.body.lastName,
+            firstName: req.body.firstName,
+            phone: req.body.phone,
+            employeeStatus: req.body.employeeStatus,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate
+          });
+          staff.save(function(err) {
+              if (err) {return next(err)};
+              res.redirect(participant.url);
+          });
+      }
+  }
+
 };
 
 // Display staff delete form on GET.
