@@ -1,4 +1,10 @@
 var Person = require('../objects/Person');
+var Guest = require('../objects/Guest');
+var Staff = require('../objects/Staff');
+var Patient = require('../objects/Patient');
+var async = require('async');
+const {body, validationResult} = require('express-validator/check');
+const {sanitizeBody} = require('express-validator/filter');
 
 // Display list of all persons.
 
@@ -15,6 +21,7 @@ exports.person_list = function(req, res, next) {
 // Display detail page for a specific person.
 exports.person_read = function(req, res, next) {
     Person.find()
+    .populate('person')
     .exec(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
@@ -34,13 +41,13 @@ exports.person_read = function(req, res, next) {
 exports.person_create_get = function(req, res) {
     async.parallel({
         guest: function(callback) {
-            Guest.find({},"xx").exec(callback);
+            Guest.find({},"guest").exec(callback); //not sure what to find
         },
         patient: function(callback) {
-            Patient.find({},"xx").exec(callback);
+            Patient.find({},"patient").exec(callback); //not sure what to find
         },
         staff: function(callback) {
-            Staff.find({},"xx").exec(callback);
+            Staff.find({},"staff").exec(callback); //not sure what to find
         },
         function (err, results) {
             if (err) {return next(err);}
@@ -101,7 +108,12 @@ exports.person_create_post = [
 
 // Display person delete form on GET.
 exports.person_delete_get = function(req, res, next) {
-    Person.findById(req.params.id).exec(function(err,results) {
+    Person.findById(req.params.id)
+    .populate('person')
+    .populate('guest')
+    .populate('patient')
+    .populate('staff')
+    .exec(function(err,results) {
         if (err) {return next(err)};
         //redirect will need updated url address-----------
         if (results==null) {res.redirect('/url/xxx')};
@@ -118,7 +130,7 @@ exports.person_delete_post = function(req, res, next) {
     Person.findByIdAndDelete(req.params.id, function deletePerson(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/index/xxx');
+        res.redirect('/user/Person');
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
 };
@@ -127,20 +139,25 @@ exports.person_delete_post = function(req, res, next) {
 exports.person_update_get = function(req, res) {
     async.parallel({
         person: function(callback) {
-            Person.findById(req.params.id).exec(callback);
+            Person.findById(req.params.id)
+            .populate('person')
+            .populate('guest')
+            .populate('patient')
+            .populate('staff')
+            .exec(callback);
         },
         guest: function(callback) {
-            Guest.find({},"xx").exec(callback);
+            Guest.find({},"xx").exec(callback); //not sure what to find
         },
         patient: function(callback) {
-            Patient.find({},"xx").exec(callback);
+            Patient.find({},"xx").exec(callback);  //not sure what to find
         },
         staff: function(callback) {
-            Staff.find({},"xx").exec(callback);
+            Staff.find({},"xx").exec(callback);  //not sure what to find
         },
     }),
     function (err,res, results) {
-        if (err) {return next(err);
+        if (err) {return next(err)};
         res.render('person_update', {
             title: 'Update Person',
             person: results.person,
@@ -148,8 +165,7 @@ exports.person_update_get = function(req, res) {
             patient: results.patient,
             staff: results.staff
         });
-        };
-    }
+    };
     //res.send('NOT IMPLEMENTED: person update GET');
 };
 
@@ -188,7 +204,7 @@ exports.person_update_post = [
                 zip: req.body.zip,
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone,
-                id:req.params.id
+                _id:req.params.id
             });
         };
     }

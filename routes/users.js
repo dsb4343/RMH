@@ -6,6 +6,7 @@ var Registration = require('../controllers/registrationController');
 var Guest = require('../controllers/guestController');
 var Patient = require('../controllers/patientController');
 var Staff = require('../controllers/staffController');
+var Dashboard = require('../controllers/dashboardController');
 
 router.get('/', Dashboard.index); //landing page
 
@@ -62,7 +63,6 @@ router.get('/Registration/:id/update', Registration.registration_update_get);
 router.post('/Registration/:id/update', Registration.registration_update_post);
 
 router.get('/Registration/:id', Registration.registration_read);
-
 router.get('/Registration', Registration.registration_list)
 
 //Guest Routes
