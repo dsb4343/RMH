@@ -6,15 +6,11 @@
             {{#each guest}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
         </select><br>
     <label for="patient">Patient:</label>
-        <select name="patient" required="true">
-            <option value="">Select One</option>
-            {{#each patient}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
-        </select><br> 
+        <input name="patient" type="text" id="patient"><br>
+    <label for="patientLoc">Patient Location:</label>
+        <input name="patientLoc" type="text" id="patientLoc"><br> 
     <label for="staff">Staff:</label>
-        <select name="staff" required="true">
-            <option value="">Select One</option>
-            {{#each staff}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
-        </select><br>
+            <input name="staff" type="text" id="staff"><br>
     <label for="room">Room:</label>
         <select name="room" required="true">
             <option value="">Select One</option>
@@ -24,6 +20,10 @@
         <input name="checkIn" type="text" id="check in"><br> 
     <label for="checkOut">Checked Out: </label>
         <input name="checkOut" type="text" id="check out"><br>
+    <label for="vehicle">Vehicle:</label>
+        <input name="vehicle" type="text" id="vehicle"><br>
+    <label for="plateNum">Vehicle Plate Number:</label>
+        <input name="plateNum" type="text" id="plateNum"><br> 
     <label for="numbKeys">Number of Keys: </label>
         <input name="numbKeys" type="text" id="number of keys"><br>
     <label for="loans">Items on Loan: </label>

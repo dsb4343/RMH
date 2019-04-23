@@ -1,7 +1,5 @@
 var Registration = require('../objects/Registration');
-var Patient = require('../objects/Patient');
-var Guest = require('../objects/Guest');
-var Staff = require('../objects/Staff');
+var Guest = require('../objects/Person');
 var Room = require('../objects/Room');
 
 var async = require('async');
@@ -13,8 +11,9 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.registration_list = function(req, res, next) {
     Registration.find({}, 'guest')
     .populate('guest')
-    .execute(function (err, list_registrations){
-        if (err) {return next(err); }
+    .populate('room')
+    .exec(function (err, list_registrations){
+        if (err) { return next(err); }
         res.render('registration_list', {title: 'Registration List', registration_list: list_registrations });
     });
 };
@@ -24,22 +23,12 @@ exports.registration_read = function(req, res, next) {
     async.parallel({
         registration: function(callback) {
             Registration.findById(req.params.id)
-            .populate('patient')
             .populate('guest')
-            .populate('staff')
             .populate('room')
             .exec(callback)
         },
-        patient: function(callback) {
-            Registration.find({ 'patient': req.params.id })
-            .exec(callback);
-        },
         guest: function(callback) {
             Registration.find({ 'guest': req.params.id })
-            .exec(callback);
-        },
-        staff: function(callback) {
-            Registration.find({ 'staff': req.params.id })
             .exec(callback);
         },
         room: function(callback) {
@@ -54,28 +43,22 @@ exports.registration_read = function(req, res, next) {
             err.status = 404;
             return next (err);
         }
-        res.render('registration_read', { title: 'Registration Detail', registration: results.registration, patient: results.patient, guest: results.guest, staff: results.staff, room: results.room });
+        res.render('registration_read', { title: 'Registration Detail', registration: results.registration, guest: results.guest, room: results.room });
     })
 };
 
 // Display registration create form on GET.
 exports.registration_create_get = function(req, res, next) {
     async.parallel({
-        patient: function(callback) {
-            Patient.find(callback);
-        },
         guest: function(callback) {
             Guest.find(callback);
-        },
-        staff: function(callback) {
-            Staff.find(callback);
         },
         room: function(callback) {
             Room.find(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('registration_create', { title: 'Create Registration', patients: results.patients, guests: results.guests, staffs: results.staffs, rooms: results.rooms})
+        res.render('registration_create', { title: 'Create Registration', guests: results.guests, rooms: results.rooms})
     });
 };
 
@@ -83,10 +66,13 @@ exports.registration_create_get = function(req, res, next) {
 exports.registration_create_post = [
     body('guest', 'Guest must not be empty.').isLength({ min:1 }).trim(),
     body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
+    body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
     body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
     body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim,
     body('checkOut', 'Check Out must not be empty.').isLength({ min:1 }).trim,
+    body('vehicle', 'Vehicle must not be empty.').isLength({ min:1 }).trim(),
+    body('plateNum', 'Vehicle Plate Number must not be empty.').isLength({ min:1 }).trim(),
     body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim,
     body('loans', 'Loans must not be empty.').isLength({ min: 1 }).trim(),
     body('comments', 'Comments must not be empty.').isLength({ min:1 }).trim(),
@@ -100,10 +86,13 @@ exports.registration_create_post = [
         {
             guest: req.body.guest,
             patient: req.body.patient,
+            patientLoc: req.body.patientLoc,
             staff: req.body.staff,
             room: req.body.room,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
+            vehicle: req.body.vehicle,
+            plateNum: req.body.plateNum,
             numbKeys: req.body.numbKeys,
             loans: req.body.loans,
             comments: req.body.comments            
@@ -113,19 +102,13 @@ exports.registration_create_post = [
                 guest: function(callback) {
                     Guest.find(callback)
                 },
-                patient: function(callback) {
-                    Patient.find(callback)
-                },
-                staff: function(callback) {
-                    Staff.find(callback)
-                },
                 room: function(callback) {
                     Room.find(callback)
                 },
                 
             }, function (err, results) {
                 if (err) { return next(err); }
-                res.render('registration_create', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
+                res.render('registration_create', { title: 'Create Registration', guests: results.guests, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
             return;
         }
@@ -142,10 +125,8 @@ exports.registration_create_post = [
 exports.registration_delete_get = function(req, res, next) {
     Registration.findById(req.params.id)
     .populate('guest')
-    .populate('patient')
-    .populate('staff')
     .populate('room')
-    .execute(function (err, registration) {
+    .exec(function (err, registration) {
         if (err) { return next(err); }
         if(registration==null) {
             res.redirect('/users/registration');
@@ -168,19 +149,11 @@ exports.registration_update_get = function(req, res, next) {
         registration:function(callback) {
             Registration.FindById(req.params.id)
             .populate('guest')
-            .populate('patient')
-            .populate('staff')
             .populate('room')
             .exec(callback);
         },
         guest: function(callback) {
             Guest.find(callback);
-        },
-        patient: function(callback) {
-            Patient.find(callback);
-        },
-        staff: function(callback) {
-            Staff.find(callback);
         },
         room: function(callback) {
             Room.find(callback);
@@ -192,7 +165,7 @@ exports.registration_update_get = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('registration_create', { title: 'Update Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: results.registration})
+        res.render('registration_create', { title: 'Update Registration', guests: results.guests, rooms: results.rooms, registration: results.registration})
     })
 };
 
@@ -200,10 +173,13 @@ exports.registration_update_get = function(req, res, next) {
 exports.registration_update_post = [
     body('guest', 'Guest must not be empty.').isLength({ min:1 }).trim(),
     body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
+    body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
     body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
     body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim,
     body('checkOut', 'Check Out must not be empty.').isLength({ min:1 }).trim,
+    body('vehicle', 'Vehicle must not be empty.').isLength({ min:1 }).trim(),
+    body('plateNum', 'Vehicle Plate Number must not be empty.').isLength({ min:1 }).trim(),
     body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim,
     body('loans', 'Loans must not be empty.').isLength({ min: 1 }).trim(),
     body('comments', 'Comments must not be empty.').isLength({ min:1 }).trim(),
@@ -217,13 +193,16 @@ exports.registration_update_post = [
         {
             guest: req.body.guest,
             patient: req.body.patient,
+            patientLoc: req.body.patientLoc,
             staff: req.body.staff,
             room: req.body.room,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
+            vehicle: req.body.vehicle,
+            plateNum: req.body.plateNum,
             numbKeys: req.body.numbKeys,
             loans: req.body.loans,
-            comments: req.body.comments ,
+            comments: req.body.comments,
             _id:req.params.id
         });
         if (!errors.isEmpty()) {
@@ -231,19 +210,13 @@ exports.registration_update_post = [
                 guest: function(callback) {
                     Guest.find(callback)
                 },
-                patient: function(callback) {
-                    Patient.find(callback)
-                },
-                staff: function(callback) {
-                    Staff.find(callback)
-                },
                 room: function(callback) {
                     Room.find(callback)
                 },
                 
             }, function (err, results) {
                 if (err) { return next(err); }
-                res.render('registration_create', { title: 'Create Registration', guests: results.guests, patients: results.patients, staff: results.staff, rooms: results.rooms, registration: registration, errors: errors.array() });
+                res.render('registration_create', { title: 'Create Registration', guests: results.guests, rooms: results.rooms, registration: registration, errors: errors.array() });
             });
             return;
         }
