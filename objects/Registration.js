@@ -17,4 +17,10 @@ var RegistrationSchema = new Schema ({
     comments: {type: String, max: 256}
 });
 
+RegistrationSchema
+.virtual('url')
+.get(function(){
+    return '/users/Registration' + this._id;
+});
+
 module.exports = mongoose.model('Registration', RegistrationSchema);
