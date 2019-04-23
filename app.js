@@ -10,19 +10,19 @@ var adminRouter = require('./routes/admin');
 
 var app = express();
 
-/*///////////////////    This may be necessary in the future if we use Mlab
+///////////////////    This may be necessary in the future if we use Mlab
 // MONGOOSE SETUP
 //Import the mongoose module
 var mongoose = require('mongoose');
 
 //Set up default mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = process.env.MONGODB_URI || 'mongodb://rmh:cmst;315@ds255403.mlab.com:55403/twist2-proj';
+var mongoDB = process.env.MONGODB_URI || 'mongodb://rmh:cmst315@ds059804.mlab.com:59804/rmh';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-*////////////////////
+///////////////////
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
