@@ -8,8 +8,8 @@ var Schema = mongoose.Schema;
 var PersonSchema = new Schema({
     lastName: {type: String, max: 100, required: true},
     firstName: {type: String, max: 100, required: true},
-    phone: {type: Number, max: 10},
-    cellPhone: {type: Number, max: 10},
+    homePhone: {type: Number, min: 10},
+    cellPhone: {type: Number, min: 10},
     email: {type: String, },
     homeAddress: {type: String, },
     city: {type: String, },
@@ -18,9 +18,20 @@ var PersonSchema = new Schema({
     emergencyContact: {type: String, },
     emergencyPhone: {type: String, }
 });
+//Virtuals
+PersonSchema
+.virtual('url')
+.get(function(){
+    return '/users/Person/' + this._id;
+})
+
+PersonSchema
+.virtual('name')
+.get(function() {
+    return this.lastName + ', ' + this.firstName;
+})
 
 //Export for mongoose
 module.exports = mongoose.model('Person', PersonSchema);
 
-//Virtuals
 
