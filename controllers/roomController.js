@@ -1,5 +1,8 @@
 var Room = require('../objects/Room');
 
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+
 // Display list of all rooms.
 exports.room_list = function(req, res, next) {
     Room.find()
@@ -33,20 +36,11 @@ exports.room_read = function(req, res, next) {
 
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
-    Room.findById(req.params.id)
-    .exec(function (err, results){
-        if (err) {return next(err);}
-        if (results==null) {
-            res.redirect('/room/create');
-        }    
-    console.log(results);
     res.render('room_create', {
-        title: 'Room',
-        room: room
+        title: 'Room'        
     });
-});
-    //res.send('NOT IMPLEMENTED: room create GET');
 };
+    //res.send('NOT IMPLEMENTED: room create GET');
 
 // Handle room create on POST.
 exports.room_create_post = [
