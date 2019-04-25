@@ -4,7 +4,7 @@ var Room = require('../objects/Room');
 exports.room_list = function(req, res, next) {
     Room.find()
     .sort([['roomNumber', 'ascending']])
-    .execute(function(err, list_room) {
+    .exec(function(err, list_room) {
         if (err) {return next(err)};
         res.render('room_list', { title: 'All Room', room_list: list_room});
     }); 
@@ -15,7 +15,7 @@ exports.room_list = function(req, res, next) {
 exports.room_read = function(req, res, next) {
     Room.find()
     .populate('room')
-    .execute(function (err, results) {
+    .exec(function (err, results) {
         if (err) {return next(err)};
         if (results == null) {
             var err = new Error('Room not found');
@@ -34,7 +34,7 @@ exports.room_read = function(req, res, next) {
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
     Room.findById(req.params.id)
-    .execute(function (err, results){
+    .exec(function (err, results){
         if (err) {return next(err);}
         if (results==null) {
             res.redirect('/room/create');
@@ -49,26 +49,110 @@ exports.room_create_get = function(req, res) {
 };
 
 // Handle room create on POST.
-exports.room_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: room create POST');
-};
+exports.room_create_post = [
+    body('roomNumber').isLength({min: 10}).trim().withMessage('Missing room Number'),
+    body('handicapAccess').isLength({min: 10}).trim().withMessage('Is room handicap accessible?'),
+    body('status').isLength({min: 10}).trim().withMessage('What is room status'),
+    sanitizeBody('roomNumber').trim().escape(),
+    sanitizeBody('handicapAccess').trim().escape(),
+    sanitizeBody('status').trim().escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('room_create', {
+                title: 'Room Error',
+                errors: errors.array()
+            });
+            return;
+        }
+        else {
+            var room = new Room({
+                roomNumber: req.body.roomNumber,
+                handicapAccess: req.body.handicapAccess,
+                status: req.body.status
+                
+            });
+            room.save(function(err) {
+                if (err) {return next(err)};
+                res.redirect(room.url);  //redirect ????
+            });
+        }
+    }
+    //res.send('NOT IMPLEMENTED: person create POST');
+];
+    
+
 
 // Display room delete form on GET.
 exports.room_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: room delete GET');
+    Room.findById(req.params.id)
+    .populate('room')
+    .exec(function(err,results) {
+        if (err) {return next(err)};
+        if (results==null) {res.redirect('/room')};
+        res.render('room_delete', {
+            title: 'Delete Room',
+            room: results
+        });
+    });
+    //res.send('NOT IMPLEMENTED: person delete GET');
 };
+    
+
 
 // Handle room delete on POST.
-exports.room_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: room delete POST');
+exports.room_delete_post = function(req, res, next) {
+    Room.findByIdAndDelete(req.params.id, 
+        function deleteRoom(err) {
+        if (err) return next(err);
+        //redirect will need updated url address--------------
+        res.redirect('/users/room');
+    });
+    //res.send('NOT IMPLEMENTED: person delete POST');
 };
+    
 
 // Display room update form on GET.
 exports.room_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: room update GET');
+    Room.findById(req.params.id)
+        .populate('room')
+        .exec(callback);
+        if (err) {return next(err)};
+        res.render('room_update', {
+            title: 'Update Room',
+            room: results.room
+        });
+    //res.send('NOT IMPLEMENTED: person update GET');
 };
+    
 
 // Handle room update on POST.
-exports.room_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: room update POST');
-};
+exports.room_update_post = [
+    body('roomNumber').isLength({min: 10}).trim().withMessage('Missing room Number'),
+    body('handicapAccess').isLength({min: 10}).trim().withMessage('Is room handicap accessible?'),
+    body('status').isLength({min: 10}).trim().withMessage('What is room status'),
+    sanitizeBody('roomNumber').trim().escape(),
+    sanitizeBody('handicapAccess').trim().escape(),
+    sanitizeBody('status').trim().escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('room_create', {
+                title: 'Room Error',
+                errors: errors.array()
+            });
+            return;
+        }
+        else {
+            var room = new Room({
+                roomNumber: req.body.roomNumber,
+                handicapAccess: req.body.handicapAccess,
+                status: req.body.status
+                
+            });
+        };
+    }
+    //res.send('NOT IMPLEMENTED: room update POST');
+];
