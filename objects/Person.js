@@ -9,20 +9,20 @@ var PersonSchema = new Schema({
     lastName: {type: String, max: 100, required: true},
     firstName: {type: String, max: 100, required: true},
     homePhone: {type: Number, min: 10},
-    cellPhone: {type: Number, min: 10},
-    email: {type: String, },
+    cellPhone: {type: Number, min: 10, required: true},
+    email: {type: String, required: true},
     homeAddress: {type: String, },
     city: {type: String, },
     state: {type: String, },
     zip: {type: String, },
     emergencyContact: {type: String, },
-    emergencyPhone: {type: String, }
+    emergencyPhone: {type: Number, }
 });
 //Virtuals
 PersonSchema
 .virtual('url')
 .get(function(){
-    return '/users/Person/' + this._id;
+    return '/admin/Person/' + this._id;
 })
 
 PersonSchema
