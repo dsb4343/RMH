@@ -33,7 +33,19 @@ exports.room_read = function(req, res, next) {
 
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: room create GET');
+    Room.findById(req.params.id)
+    .execute(function (err, results){
+        if (err) {return next(err);}
+        if (results==null) {
+            res.redirect('/room/create');
+        }    
+    console.log(results);
+    res.render('room_create', {
+        title: 'Room',
+        room: room
+    });
+});
+    //res.send('NOT IMPLEMENTED: room create GET');
 };
 
 // Handle room create on POST.
