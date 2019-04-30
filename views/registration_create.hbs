@@ -1,34 +1,33 @@
-<body></body>
-<form action="/Registration/Create" method="POST">
-    <label for="guest">Guest:</label>
-        <select name="guest" required="true">
-            <option value="">Select One</option>
-            {{#each guest}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
-        </select><br>
-    <label for="patient">Patient:</label>
-        <input name="patient" type="text" id="patient"><br>
-    <label for="patientLoc">Patient Location:</label>
-        <input name="patientLoc" type="text" id="patientLoc"><br> 
-    <label for="staff">Staff:</label>
+<body>
+    <div>
+    <fieldset style='width: 30%;'>
+        <legend><h4>{{title}}</h4></legend>
+        <form action="/Registration/Create" method="POST">
+        <label for="patient">Patient:</label><br>
+            <input name="patient" type="text" id="patient"><br>
+        <label for="patientLoc">Patient Location:</label><br>
+            <input name="patientLoc" type="text" id="patientLoc"><br> 
+        <label for="staff">Staff:</label><br>
             <input name="staff" type="text" id="staff"><br>
-    <label for="room">Room:</label>
-        <select name="room" required="true">
-            <option value="">Select One</option>
-            {{#each room}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
-        </select><br>
-    <label for="checkIn">Checked In: </label>
-        <input name="checkIn" type="text" id="check in"><br> 
-    <label for="checkOut">Checked Out: </label>
-        <input name="checkOut" type="text" id="check out"><br>
-    <label for="vehicle">Vehicle:</label>
-        <input name="vehicle" type="text" id="vehicle"><br>
-    <label for="plateNum">Vehicle Plate Number:</label>
-        <input name="plateNum" type="text" id="plateNum"><br> 
-    <label for="numbKeys">Number of Keys: </label>
-        <input name="numbKeys" type="text" id="number of keys"><br>
-    <label for="loans">Items on Loan: </label>
-        <input name="loans" type="text" id="loans"><br>
-    <label for="comments">Comments: </label>
-        <input name="comments" type="text" id="comments"><br>    
+        <label for="room">Room:</label><br>
+            <select name="room" required="true">
+                <option value="">Select One</option>
+                {{#each room}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
+            </select><br>
+        <label for="checkIn">Checked In: </label><br>
+            <input name="checkIn" type="text" id="check in"><br> 
+        <label for="checkOut">Checked Out: </label><br>
+            <input name="checkOut" type="text" id="check out"><br>
+        <label for="vehicle">Vehicle:</label><br>
+            <input name="vehicle" type="text" id="vehicle"><br>
+        <label for="plateNum">Vehicle Plate Number:</label><br>
+            <input name="plateNum" type="text" id="plateNum"><br> 
+        <label for="numbKeys">Number of Keys: </label><br>
+            <input name="numbKeys" type="text" id="number of keys"><br>
+        <label for="loans">Items on Loan: </label><br>
+            <input name="loans" type="text" id="loans"><br>
+        <label for="comments">Comments: </label><br>
+            <input name="comments" type="text" id="comments"><br> 
+            <input type="submit" value="Create Registration"> <br>   
     </form>
-    </body>
+</body>
