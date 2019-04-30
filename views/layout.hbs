@@ -6,12 +6,18 @@
   </head>
   <body>
     <a href="/">Home</a>
-	<a href="/admin/Person">Guests</a>
-	<a href="/admin/Registration">Registration</a>
-	<a href="/admin/Donation">Finances</a>
-	<a href="/admin/Patient">Patients</a>
-	<a href="/admin/Staff">Volunteers</a>
-	<a href="/admin/Room">Rooms</a>
+	  <a href="/admin/Person">Guests</a>
+	  <a href="/admin/Registration">Registration</a>
+	  <a href="/admin/Donation">Finances</a>
+	  <a href="/admin/Patient">Patients</a>
+	  <a href="/admin/Staff">Volunteers</a>
+	  <a href="/admin/Room">Rooms</a>
     {{{body}}}
   </body>
+
+  {{#if errors}}
+    {{#each errors}}
+	  <p>{{this.msg}}</p>
+	  {{/each}}
+	  {{/if}}
 </html>
