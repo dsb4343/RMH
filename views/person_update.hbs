@@ -1,29 +1,31 @@
 <body>
+    <h1>{{title}}</h1>
+    <body>
 <p>Use the following form to add a new Guest to the database. </p>
 
-<form action="/admin/Person/create" method="POST">
+<form action="{{url}}/update" method="POST">
 	<label for="name">First Name:</label>
 	<input type="text" name="firstName" id="firstName" placeholder="required" value="{{person.firstName}}" autofocus></input>
 	<br>
 	<br>
 	
 	<label for="lastName">Last Name:</label>
-	<input type="text" name="lastName" id="lastName" placeholder="required" value="{{person.lastName}}" autofocus></input>
+	<input type="text" name="lastName" id="lastName" placeholder="required" autofocus></input>
 	<br>
 	<br>
 	
 	<label for="email">Email Address:</label>
-	<input type="text" name="email" id="email" placeholder="Required" value="{{person.email}}"></input>
+	<input type="text" name="email" id="email" placeholder="Required"</input>
 	<br>
 	<br>
 	
 	<label for="phone">Home Phone:</label>
-	<input type="tel" name="phone" id="phone" placeholder="" maxlength="11" value="{{person.homePhone}}"></input>
+	<input type="tel" name="phone" id="phone" placeholder="" maxlength="11"></input>
 	<br>
 	<br>
 	
 	<label for="cellPhone">Cell Phone:</label>
-	<input type="tel" name="cellPhone" id="cellPhone" placeholder="Required" maxlength="11" value="{{person.cellPhone}}"></input>
+	<input type="tel" name="cellPhone" id="cellPhone" placeholder="Required" maxlength="11"></input>
 	<br>
 	<br>
 	
@@ -66,4 +68,5 @@
 	<p>{{this.msg}}</p>
 	{{/each}}
 	{{/if}}
+</body>
 </body>
