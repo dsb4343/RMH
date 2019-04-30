@@ -151,7 +151,7 @@ exports.person_update_get = function(req, res) {
             if (Person==null){
                 res.redirect('/users/person/');
             }
-            res.render('person_create', {
+            res.render('person_update', {
                 title: 'Update Guest',
                 person: results
             });
@@ -176,7 +176,7 @@ exports.person_update_post = [
         if (!errors.isEmpty()) {
             res.render('person_update', {
                 title: 'Update Person Failed',
-                _id: person._id,
+                _id: person.id,
                 person: person,
                 errors: errors.array(),
             });
@@ -195,8 +195,13 @@ exports.person_update_post = [
                 zip: req.body.zip,
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone,
-                _id:req.params.id
+                _id: req.params.id
             });
+            Person.findByIdAndUpdate(req.params.id, person, {}, function (err, results) {
+                console.log(results);
+                if (err) {return next(err)};
+                res.redirect(Person.url);
+            })
         };
     }
     //res.send('NOT IMPLEMENTED: person update POST');
