@@ -2,7 +2,7 @@
     <div>
     <fieldset style='width: 30%;'>
         <legend><h4>{{title}}</h4></legend>
-        <form action="/Registration/Create" method="POST">
+        <form action="/admin/registration/create" method="POST">
         <label for="patient">Patient:</label><br>
             <input name="patient" type="text" id="patient"><br>
         <label for="patientLoc">Patient Location:</label><br>
@@ -10,10 +10,10 @@
         <label for="staff">Staff:</label><br>
             <input name="staff" type="text" id="staff"><br>
         <label for="room">Room:</label><br>
-            <select name="room" required="true">
+            <!--<select name="room" required="true">
                 <option value="">Select One</option>
                 {{#each room}}<option value="{{_id}}">{{firstName}}</option>{{/each}}
-            </select><br>
+            </select><br>-->
         <label for="checkIn">Checked In: </label><br>
             <input name="checkIn" type="text" id="check in"><br> 
         <label for="checkOut">Checked Out: </label><br>

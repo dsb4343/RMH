@@ -20,7 +20,7 @@ var RegistrationSchema = new Schema ({
 RegistrationSchema
 .virtual('url')
 .get(function(){
-    return '/users/Registration' + this._id;
+    return '/users/registration' + this._id;
 });
 
 module.exports = mongoose.model('Registration', RegistrationSchema);

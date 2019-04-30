@@ -88,7 +88,7 @@ exports.person_create_post = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('person_create', {
-                title: 'New Guest',
+                title: 'Unable to create new guest',
                 errors: errors.array()
             });
             return;
@@ -107,10 +107,14 @@ exports.person_create_post = [
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone
             });
-            person.save(function(err, results) {
+            person.save(function(err, person) {
                 console.log(results);
                 if (err) {return next(err)};
-                res.redirect(Person.url);  //redirect ????
+                res.render('person_read', {
+                    title: 'Guest Details',
+                    person: person
+                })
+                //res.redirect(Person.url);  //redirect ????
             });
         }
     }
@@ -144,18 +148,27 @@ exports.person_delete_post = function(req, res, next) {
 };
 
 // Display person update form on GET.
-exports.person_update_get = function(req, res) {
-        Person.findById(req.params.id)
-        .exec(function (err, results){
+exports.person_update_get = function(req, res,next) {
+        Person.findById(req.params.id, function (err, person){
+            if(err) {return next(err)};
+            if(person == null) {
+                res.redirect('/users/person/');
+            };
+            res.render('person_update', {
+                title:'Update Guest Record',
+                person: person
+            })
+        })
+        /*.exec(function (err, person){
             if (err) {return next(err)};
             if (Person==null){
                 res.redirect('/users/person/');
             }
             res.render('person_update', {
                 title: 'Update Guest',
-                person: results
+                person: person
             });
-        });
+        });*/
     //res.send('NOT IMPLEMENTED: person update GET');
 };
 
@@ -173,6 +186,7 @@ exports.person_update_post = [
 
     (req, res, next) => {
         const errors = validationResult(req);
+        
         if (!errors.isEmpty()) {
             res.render('person_update', {
                 title: 'Update Person Failed',
@@ -197,10 +211,11 @@ exports.person_update_post = [
                 emergencyPhone: req.body.emergencyPhone,
                 _id: req.params.id
             });
-            Person.findByIdAndUpdate(req.params.id, person, {}, function (err, results) {
-                console.log(results);
-                if (err) {return next(err)};
-                res.redirect(Person.url);
+            Person.findByIdAndUpdate(req.params.id, person, {}, function (err, person) {
+                console.log(person);
+                if (err) {return next(err)}
+                //res.render('person_read', {title: 'Guest Details', person: person}) // render Not working
+                res.redirect(person.url); //redirect not working???
             })
         };
     }
