@@ -46,7 +46,7 @@ exports.person_read = function(req, res, next) {
     });
 */    
 
-    Person.findById(req.params._id)
+    Person.findById(req.params.id)
         //.populate('person')
         .exec(function(err, results){
             if (err) {return next(err)};
@@ -78,10 +78,10 @@ exports.person_create_post = [
     body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
-    body('homePhone').isLength({min: 10}).trim().withMessage('Missing Phone Number'),
+    body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Cell Phone Number'),
     sanitizeBody('firstName').trim().escape(),
     sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('homePhone').trim().escape(),
+    sanitizeBody('cellPhone').trim().escape(),
     sanitizeBody('email').trim().escape(),
 
     (req, res, next) => {
@@ -120,8 +120,8 @@ exports.person_create_post = [
 // Display person delete form on GET.
 exports.person_delete_get = function(req, res, next) {
     Person.findById(req.params.id)
-    .populate('person')
-    .execute(function(err,results) {
+    //.populate('person')
+    .exec(function(err,results) {
         if (err) {return next(err)};
         if (results==null) {res.redirect('/person')};
         res.render('person_delete', {
@@ -146,12 +146,15 @@ exports.person_delete_post = function(req, res, next) {
 // Display person update form on GET.
 exports.person_update_get = function(req, res) {
         Person.findById(req.params.id)
-        .populate('person')
-        .exec(callback);
-        if (err) {return next(err)};
-        res.render('person_update', {
-            title: 'Update Guest',
-            person: results.person
+        .exec(function (err, results){
+            if (err) {return next(err)};
+            if (Person==null){
+                res.redirect('/users/person/');
+            }
+            res.render('person_create', {
+                title: 'Update Guest',
+                person: results
+            });
         });
     //res.send('NOT IMPLEMENTED: person update GET');
 };
@@ -162,10 +165,10 @@ exports.person_update_post = [
     body('firstName').isLength({min: 1}).trim().withMessage('Missing First Name'),
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
-    body('homePhone').isLength({min: 10}).trim().withMessage('Missing Phone Number'),
+    body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Home Phone Number'),
     sanitizeBody('firstName').trim().escape(),
     sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('homePhone').trim().escape(),
+    sanitizeBody('cellPhone').trim().escape(),
     sanitizeBody('email').trim().escape(),
 
     (req, res, next) => {
