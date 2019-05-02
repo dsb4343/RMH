@@ -3,6 +3,7 @@ var router = express.Router();
 var Person = require('../controllers/personController');
 var Room = require('../controllers/roomController');
 var Registration = require('../controllers/registrationController');
+var Donation = require('../controllers/donationController');
 var Guest = require('../controllers/guestController');
 var Patient = require('../controllers/patientController');
 var Staff = require('../controllers/staffController');
@@ -65,6 +66,25 @@ router.post('/Registration/:id/update', Registration.registration_update_post);
 router.get('/Registration/:id', Registration.registration_read);
 
 router.get('/Registration', Registration.registration_list)
+
+//Donation Routes
+///////////////////////////////////////////////
+
+router.get('/Donation/create', Donation.donation_create_get);
+
+router.post('/Donation/create', Donation.donation_create_post);
+
+router.get('/Donation/:id/delete', Donation.donation_delete_get);
+
+router.post('/Donation/:id/delete', Donation.donation_delete_post);
+
+router.get('/Donation/:id/update', Donation.donation_update_get);
+
+router.post('/Donation/:id/update', Donation.donation_update_post);
+
+router.get('/Donation/:id', Donation.donation_read);
+
+router.get('/Donation', Donation.donation_list)
 
 //Guest Routes
 ///////////////////////////////////////////////
