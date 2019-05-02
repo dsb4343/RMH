@@ -1,8 +1,5 @@
 var Person = require('../objects/Person');
 var Donation = require('../objects/Donation');
-//var Guest = require('../objects/Guest');
-//var Staff = require('../objects/Staff');
-//var Patient = require('../objects/Patient');
 var async = require('async');
 const {body, validationResult} = require('express-validator/check');
 const {sanitizeBody} = require('express-validator/filter');
@@ -79,10 +76,7 @@ exports.person_create_post = [
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
     body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Cell Phone Number'),
-    sanitizeBody('firstName').trim().escape(),
-    sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('cellPhone').trim().escape(),
-    sanitizeBody('email').trim().escape(),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -141,7 +135,6 @@ exports.person_delete_post = function(req, res, next) {
     Person.findByIdAndDelete(req.params.id, 
         function deletePerson(err) {
         if (err) return next(err);
-        //redirect will need updated url address--------------
         res.redirect('/users/person');
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
@@ -159,16 +152,6 @@ exports.person_update_get = function(req, res,next) {
                 person: person
             })
         })
-        /*.exec(function (err, person){
-            if (err) {return next(err)};
-            if (Person==null){
-                res.redirect('/users/person/');
-            }
-            res.render('person_update', {
-                title: 'Update Guest',
-                person: person
-            });
-        });*/
     //res.send('NOT IMPLEMENTED: person update GET');
 };
 
@@ -179,10 +162,7 @@ exports.person_update_post = [
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
     body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Home Phone Number'),
-    sanitizeBody('firstName').trim().escape(),
-    sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('cellPhone').trim().escape(),
-    sanitizeBody('email').trim().escape(),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
