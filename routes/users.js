@@ -13,39 +13,39 @@ router.get('/', Dashboard.index); //landing page
 //Person Routes
 ///////////////////////////////////////////////
 
-router.get('/Person/create', Person.person_create_get);
+router.get('/person/create', Person.person_create_get);
 
-router.post('/Person/create', Person.person_create_post);
+router.post('/person/create', Person.person_create_post);
 
-router.get('/Person/:id/delete', Person.person_delete_get);
+router.get('/person/:id/delete', Person.person_delete_get);
 
-router.post('/Person/:id/delete', Person.person_delete_post);
+router.post('/person/:id/delete', Person.person_delete_post);
 
-router.get('/Person/:id/update', Person.person_update_get);
+router.get('/person/:id/update', Person.person_update_get);
 
-router.post('/Person/:id/update', Person.person_update_post);
+router.post('/person/:id/update', Person.person_update_post);
 
-router.get('/Person/:id', Person.person_read);
+router.get('/person/:id', Person.person_read);
 
-router.get('/Person', Person.person_list)
+router.get('/person', Person.person_list)
 
 //Room Routes
 ///////////////////////////////////////////////
-router.get('/Room/create', Room.room_create_get);
+router.get('/room/create', Room.room_create_get);
 
-router.post('/Room/create', Room.room_create_post);
+router.post('/room/create', Room.room_create_post);
 
-router.get('/Room/:id/delete', Room.room_delete_get);
+router.get('/room/:id/delete', Room.room_delete_get);
 
-router.post('/Room/:id/delete', Room.room_delete_post);
+router.post('/room/:id/delete', Room.room_delete_post);
 
-router.get('/Room/:id/update', Room.room_update_get);
+router.get('/room/:id/update', Room.room_update_get);
 
-router.post('/Room/:id/update', Room.room_update_post);
+router.post('/room/:id/update', Room.room_update_post);
 
-router.get('/Room/:id', Room.room_read);
+router.get('/room/:id', Room.room_read);
 
-router.get('/Room', Room.room_list)
+router.get('/room', Room.room_list)
 
 //Registration Routes
 ///////////////////////////////////////////////

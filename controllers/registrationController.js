@@ -1,10 +1,10 @@
 var Registration = require('../objects/Registration');
-var Guest = require('../objects/Person');
+var Person = require('../objects/Person');
 var Room = require('../objects/Room');
 
 var async = require('async');
 
-const { body,validationResult } = require('express-validator/check');
+const { body,validationResults } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all registrations.
@@ -51,14 +51,14 @@ exports.registration_read = function(req, res, next) {
 exports.registration_create_get = function(req, res, next) {
     async.parallel({
         guest: function(callback) {
-            Guest.find(callback);
+            Person.find(callback);
         },
         room: function(callback) {
             Room.find(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('registration_create', { title: 'Create Registration', guests: results.guests, rooms: results.rooms})
+        res.render('registration_create', { title: 'Create Registration', guests: results.guest, rooms: results.room})
     });
 };
 
@@ -100,7 +100,7 @@ exports.registration_create_post = [
         if (!errors.isEmpty()) {
             async.parallel({
                 guest: function(callback) {
-                    Guest.find(callback)
+                    Person.find(callback)
                 },
                 room: function(callback) {
                     Room.find(callback)
@@ -108,7 +108,7 @@ exports.registration_create_post = [
                 
             }, function (err, results) {
                 if (err) { return next(err); }
-                res.render('registration_create', { title: 'Create Registration', guests: results.guests, rooms: results.rooms, registration: registration, errors: errors.array() });
+                res.render('registration_create', { title: 'Create Registration', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
             });
             return;
         }

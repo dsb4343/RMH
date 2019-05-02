@@ -108,7 +108,7 @@ exports.person_create_post = [
                 emergencyPhone: req.body.emergencyPhone
             });
             person.save(function(err, person) {
-                console.log(results);
+                console.log(person);
                 if (err) {return next(err)};
                 res.render('person_read', {
                     title: 'Guest Details',
