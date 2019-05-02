@@ -8,8 +8,8 @@ var RegistrationSchema = new Schema ({
     patientLoc: {type: String, max: 15},
     staff: {type: String, max:25},
     room: {type: Schema.Types.ObjectId, ref: 'Room'},
-    checkIn: {type: String, max: 10},
-    checkOut: {type: String, max: 10},
+    checkIn: {type: Date, max: 10},
+    checkOut: {type: Date, max: 10},
     vehicle: { type: String, max:15},
     plateNum: {type: String, max: 10},
     numbKeys: {type: String, max: 10},
@@ -20,7 +20,7 @@ var RegistrationSchema = new Schema ({
 RegistrationSchema
 .virtual('url')
 .get(function(){
-    return '/users/Registration' + this._id;
+    return '/users/registration' + this._id;
 });
 
 module.exports = mongoose.model('Registration', RegistrationSchema);

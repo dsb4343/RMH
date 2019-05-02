@@ -37,16 +37,16 @@ exports.room_read = function(req, res, next) {
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
     res.render('room_create', {
-        title: 'Room'        
+        title: 'New Room'        
     });
 };
     //res.send('NOT IMPLEMENTED: room create GET');
 
 // Handle room create on POST.
 exports.room_create_post = [
-    body('roomNumber').isLength({min: 10}).trim().withMessage('Missing room Number'),
-    body('handicapAccess').isLength({min: 10}).trim().withMessage('Is room handicap accessible?'),
-    body('status').isLength({min: 10}).trim().withMessage('What is room status'),
+    body('roomNumber').trim().withMessage('Missing room Number'),
+    body('handicapAccess').trim().withMessage('Is room handicap accessible?'),
+    body('status').trim().withMessage('What is room status'),
     sanitizeBody('roomNumber').trim().escape(),
     sanitizeBody('handicapAccess').trim().escape(),
     sanitizeBody('status').trim().escape(),
@@ -55,7 +55,7 @@ exports.room_create_post = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('room_create', {
-                title: 'Room Error',
+                title: 'Unable to create new Room',
                 errors: errors.array()
             });
             return;
@@ -67,9 +67,14 @@ exports.room_create_post = [
                 status: req.body.status
                 
             });
-            room.save(function(err) {
+            room.save(function(err, room) {
+                console.log(room);
                 if (err) {return next(err)};
-                res.redirect(room.url);  //redirect ????
+                res.render('room_read', {
+                    title: 'Room Details',
+                    room: room
+                })
+                //res.redirect(Room.url);  //redirect ????
             });
         }
     }
