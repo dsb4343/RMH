@@ -153,6 +153,10 @@ exports.room_update_post = [
                 status: req.body.status,
                 _id:req.params.id
             });
+            Room.findByIdAndUpdate(req.params.id, room, {}, function (err, room){
+                if (err) {return next(err)}
+                res.redirect(room.url);
+            })
         };
     }
     //res.send('NOT IMPLEMENTED: room update POST');
