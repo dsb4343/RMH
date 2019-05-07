@@ -116,15 +116,15 @@ exports.room_delete_post = function(req, res, next) {
 exports.room_update_get = function(req, res) {
     Room.findById(req.params.id)
         .populate('room')
-        .exec(callback);
-        if (err) {return next(err)};
-        res.render('room_update', {
-            title: 'Update Room',
-            room: results.room
+        .exec(function (err, results){
+            if (err) {return next(err)};
+            res.render('room_update', {
+                title: 'Update Room',
+                room: results.room
         });
     //res.send('NOT IMPLEMENTED: person update GET');
-};
-    
+});
+};   
 
 // Handle room update on POST.
 exports.room_update_post = [
@@ -140,17 +140,23 @@ exports.room_update_post = [
         if (!errors.isEmpty()) {
             res.render('room_create', {
                 title: 'Room Error',
+                _id: room._id,
+                room: room, 
                 errors: errors.array()
             });
-            return;
+        return;
         }
         else {
             var room = new Room({
                 roomNumber: req.body.roomNumber,
                 handicapAccess: req.body.handicapAccess,
-                status: req.body.status
-                
+                status: req.body.status,
+                _id:req.params.id
             });
+            Room.findByIdAndUpdate(req.params.id, room, {}, function (err, room){
+                if (err) {return next(err)}
+                res.redirect(room.url);
+            })
         };
     }
     //res.send('NOT IMPLEMENTED: room update POST');
