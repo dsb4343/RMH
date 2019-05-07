@@ -1,9 +1,10 @@
 <body>
+	<h1>{{title}}</h1>
     <h1>{{person.name}}</h1>
 	<h2>{{person._id}}</h2>
     <body>
 <p>Use the following form to add a new Guest to the database. </p>
-<form action="{{url}}/update" method="POST">
+<form action="{{person.url}}/update" method="POST">
 	<label for="name">First Name:</label>
 	<input type="text" name="firstName" id="firstName" placeholder="required" value="{{person.firstName}}" autofocus></input>
 	<br>
