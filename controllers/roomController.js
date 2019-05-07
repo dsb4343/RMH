@@ -16,7 +16,7 @@ exports.room_list = function(req, res, next) {
 
 // Display detail page for a specific room.
 exports.room_read = function(req, res, next) {
-    Room.find()
+    Room.findById(req.params.id)
     .populate('room')
     .exec(function (err, results) {
         if (err) {return next(err)};
