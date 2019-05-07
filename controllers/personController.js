@@ -1,8 +1,5 @@
 var Person = require('../objects/Person');
 var Donation = require('../objects/Donation');
-//var Guest = require('../objects/Guest');
-//var Staff = require('../objects/Staff');
-//var Patient = require('../objects/Patient');
 var async = require('async');
 const {body, validationResult} = require('express-validator/check');
 const {sanitizeBody} = require('express-validator/filter');
@@ -79,16 +76,13 @@ exports.person_create_post = [
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
     body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Cell Phone Number'),
-    sanitizeBody('firstName').trim().escape(),
-    sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('cellPhone').trim().escape(),
-    sanitizeBody('email').trim().escape(),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('person_create', {
-                title: 'New Guest',
+                title: 'Unable to create new guest',
                 errors: errors.array()
             });
             return;
@@ -107,10 +101,14 @@ exports.person_create_post = [
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone
             });
-            person.save(function(err, results) {
-                console.log(results);
+            person.save(function(err, person) {
+                console.log(person);
                 if (err) {return next(err)};
-                res.redirect(Person.url);  //redirect ????
+                res.render('person_read', {
+                    title: 'Guest Details',
+                    person: person
+                })
+                //res.redirect(Person.url);  //redirect ????
             });
         }
     }
@@ -137,25 +135,23 @@ exports.person_delete_post = function(req, res, next) {
     Person.findByIdAndDelete(req.params.id, 
         function deletePerson(err) {
         if (err) return next(err);
-        //redirect will need updated url address--------------
         res.redirect('/users/person');
     });
     //res.send('NOT IMPLEMENTED: person delete POST');
 };
 
 // Display person update form on GET.
-exports.person_update_get = function(req, res) {
-        Person.findById(req.params.id)
-        .exec(function (err, results){
-            if (err) {return next(err)};
-            if (Person==null){
+exports.person_update_get = function(req, res,next) {
+        Person.findById(req.params.id, function (err, person){
+            if(err) {return next(err)};
+            if(person == null) {
                 res.redirect('/users/person/');
-            }
-            res.render('person_create', {
-                title: 'Update Guest',
-                person: results
-            });
-        });
+            };
+            res.render('person_update', {
+                title:'Update Guest Record',
+                person: person
+            })
+        })
     //res.send('NOT IMPLEMENTED: person update GET');
 };
 
@@ -166,17 +162,15 @@ exports.person_update_post = [
     body('lastName').isLength({min: 1}).trim().withMessage('Missing Last Name'),
     body('email').isLength({min: 1}).trim().withMessage('Missing Email Address'),
     body('cellPhone').isLength({min: 10}).trim().withMessage('Missing Home Phone Number'),
-    sanitizeBody('firstName').trim().escape(),
-    sanitizeBody('lastName').trim().escape(),
-    sanitizeBody('cellPhone').trim().escape(),
-    sanitizeBody('email').trim().escape(),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
+        
         if (!errors.isEmpty()) {
             res.render('person_update', {
                 title: 'Update Person Failed',
-                _id: person._id,
+                _id: person.id,
                 person: person,
                 errors: errors.array(),
             });
@@ -195,8 +189,14 @@ exports.person_update_post = [
                 zip: req.body.zip,
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone,
-                _id:req.params.id
+                _id: req.params.id
             });
+            Person.findByIdAndUpdate(req.params.id, person, {}, function (err, person) {
+                console.log(person);
+                if (err) {return next(err)}
+                //res.render('person_read', {title: 'Guest Details', person: person}) // render Not working
+                res.redirect(person.url); //redirect not working???
+            })
         };
     }
     //res.send('NOT IMPLEMENTED: person update POST');

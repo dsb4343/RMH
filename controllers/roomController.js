@@ -37,16 +37,16 @@ exports.room_read = function(req, res, next) {
 // Display room create form on GET.
 exports.room_create_get = function(req, res) {
     res.render('room_create', {
-        title: 'Room'        
+        title: 'New Room'        
     });
 };
     //res.send('NOT IMPLEMENTED: room create GET');
 
 // Handle room create on POST.
 exports.room_create_post = [
-    body('roomNumber').isLength({min: 10}).trim().withMessage('Missing room Number'),
-    body('handicapAccess').isLength({min: 10}).trim().withMessage('Is room handicap accessible?'),
-    body('status').isLength({min: 10}).trim().withMessage('What is room status'),
+    body('roomNumber').trim().withMessage('Missing room Number'),
+    body('handicapAccess').trim().withMessage('Is room handicap accessible?'),
+    body('status').trim().withMessage('What is room status'),
     sanitizeBody('roomNumber').trim().escape(),
     sanitizeBody('handicapAccess').trim().escape(),
     sanitizeBody('status').trim().escape(),
@@ -55,7 +55,7 @@ exports.room_create_post = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('room_create', {
-                title: 'Room Error',
+                title: 'Unable to create new Room',
                 errors: errors.array()
             });
             return;
@@ -67,9 +67,14 @@ exports.room_create_post = [
                 status: req.body.status
                 
             });
-            room.save(function(err) {
+            room.save(function(err, room) {
+                console.log(room);
                 if (err) {return next(err)};
-                res.redirect(room.url);  //redirect ????
+                res.render('room_read', {
+                    title: 'Room Details',
+                    room: room
+                })
+                //res.redirect(Room.url);  //redirect ????
             });
         }
     }
@@ -111,15 +116,15 @@ exports.room_delete_post = function(req, res, next) {
 exports.room_update_get = function(req, res) {
     Room.findById(req.params.id)
         .populate('room')
-        .exec(callback);
-        if (err) {return next(err)};
-        res.render('room_update', {
-            title: 'Update Room',
-            room: results.room
+        .exec(function (err, results){
+            if (err) {return next(err)};
+            res.render('room_update', {
+                title: 'Update Room',
+                room: results.room
         });
     //res.send('NOT IMPLEMENTED: person update GET');
-};
-    
+});
+};   
 
 // Handle room update on POST.
 exports.room_update_post = [
@@ -135,17 +140,23 @@ exports.room_update_post = [
         if (!errors.isEmpty()) {
             res.render('room_create', {
                 title: 'Room Error',
+                _id: room._id,
+                room: room, 
                 errors: errors.array()
             });
-            return;
+        return;
         }
         else {
             var room = new Room({
                 roomNumber: req.body.roomNumber,
                 handicapAccess: req.body.handicapAccess,
-                status: req.body.status
-                
+                status: req.body.status,
+                _id:req.params.id
             });
+            Room.findByIdAndUpdate(req.params.id, room, {}, function (err, room){
+                if (err) {return next(err)}
+                res.redirect(room.url);
+            })
         };
     }
     //res.send('NOT IMPLEMENTED: room update POST');

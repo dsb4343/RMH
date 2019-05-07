@@ -12,7 +12,7 @@ exports.donation_list = function(req, res, next) {
     Donation.find({}, 'person')
     .populate('person')
     .sort([['lastName', 'ascending']])
-    .execute(function (err, list_donations) {
+    .exec(function (err, list_donations) {
         if (err) {return next(err)};
         res.render('donation_list', { title: 'Donation List', donation_list: list_donations});
     });
@@ -45,20 +45,20 @@ exports.donation_read = function(req, res, next) {
     });
 };
 // Display donation create form on GET.
-exports.donation_create_get = function(req, res) {
+exports.donation_create_get = function(req, res, next) {
 
-    async.parallel({
-        person: function(callback) {
-            Person.find({},'/users/person').exec(callback);        
-        },
-        function (err, results) {
-            if (err) {return next(err);}
-            console.log(results);
+    //async.parallel({
+    //    person: function(callback) {
+    //        Person.find(callback);        
+    //    },
+    //    function (err, results) {
+    //        if (err) {return next(err);}
+    //        console.log(results);
             res.render('donation_create', {
                 title: 'New Donation',
-                person: results.person               
-            });
-        }
+    //            person: results.person               
+    //        });
+    //    }
     })
 // res.send('NOT IMPLEMENTED: donation create GET');
 };
@@ -70,8 +70,8 @@ exports.donation_create_post = [
     body('donationType').isLength({min: 1}).trim().withMessage('Missing Donation Type'),
     body('donationDate').isLength({min: 1}).trim().withMessage('Missing Donation Date'),
     body('donationAmount').isLength({min: 1}).trim().withMessage('Missing Donation Amount'),
-    body('AdoptionDate').isLength({min: 1}).trim().withMessage('Missing Adoption Date'),
-    body('AdoptionMessage').isLength({min: 1}).trim().withMessage('Missing Adoption Message'),
+    //body('AdoptionDate').isLength({min: 1}).trim().withMessage('Missing Adoption Date'),
+    //body('AdoptionMessage').isLength({min: 1}).trim().withMessage('Missing Adoption Message'),
     
     sanitizeBody('*').trim().escape(),
 
@@ -79,21 +79,22 @@ exports.donation_create_post = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('donation_create', {
-                title: 'New Donation Error',
+                title: 'New Donation',
                 errors: errors.array()
             });
             return;
         }
         else {
             var donation = new Donation({
-                person: req.body.person,
+                guest: req.body.person,
                 donationType: req.body.donationType,
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
                 AdoptionDate: req.body.AdoptionDate,
                 AdoptionMessage: req.body.AdoptionMessage                
             });               
-            donation.save(function(err) {
+            donation.save(function(err,results) {
+                console.log(results);
                 if (err) {return next(err)};
                 res.redirect(donation.url);
             });
@@ -105,11 +106,10 @@ exports.donation_create_post = [
 // Display donation delete form on GET.
 exports.donation_delete_get = function(req, res, next) {
     Donation.findById(req.params.id)
-    .populate('person')
-    .execute(function(err,results) {
-        if (err) {return next(err)};
-        //redirect will need updated url address-----------
-        if (results==null) {res.redirect('/admin/donation')};
+    //.populate('person')
+    .exec(function(err,results) {
+        if (err) {return next(err)};       
+        if (results==null) {res.redirect('/donation')};
         res.render('donation_delete', { title: 'Delete Donation', donation: results });
     });
 // res.send('NOT IMPLEMENTED: donation delete GET');
@@ -117,10 +117,11 @@ exports.donation_delete_get = function(req, res, next) {
 
 // Handle donation delete on POST.
 exports.donation_delete_post = function(req, res, next) {
-    Donation.findByIdAndDelete(req.params.id, function deleteDonation(err) {
+    Donation.findByIdAndDelete(req.params.id, 
+        function deleteDonation(err) {
         if (err) return next(err);
         //redirect will need updated url address--------------
-        res.redirect('/admin/donation');
+        res.redirect('/users/donation');
     });
 // res.send('NOT IMPLEMENTED: donation delete POST');
 };
