@@ -1,8 +1,7 @@
-<body>
     <ul>
         {{#if registration_list}}
         {{#each registration_list}}
-        <li><a href={{url}}>{{name}}{{date}}</a>
+        <li><a href="{{url}}">{{name}}</a>
             <a href="{{url}}/update">Update</a>
             <a href="{{url}}/delete">Delete</a>
         </li>
@@ -12,4 +11,3 @@
         {{/if}}
     </ul>
     <a href="/admin/registration/create">New Registration</a>
-</body>
