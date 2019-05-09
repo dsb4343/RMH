@@ -22,7 +22,7 @@ RoomSchema
 RoomSchema
 .virtual('name')
 .get(function() {
-    return this.roomNumber;
+    return "Room " + this.roomNumber + " is " + this.status;
 })
 
 //Export for mongoose
