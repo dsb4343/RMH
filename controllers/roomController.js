@@ -120,7 +120,7 @@ exports.room_update_get = function(req, res) {
             if (err) {return next(err)};
             res.render('room_update', {
                 title: 'Update Room',
-                room: results.room
+                room: results
         });
     //res.send('NOT IMPLEMENTED: person update GET');
 });
@@ -128,19 +128,17 @@ exports.room_update_get = function(req, res) {
 
 // Handle room update on POST.
 exports.room_update_post = [
-    body('roomNumber').isLength({min: 10}).trim().withMessage('Missing room Number'),
-    body('handicapAccess').isLength({min: 10}).trim().withMessage('Is room handicap accessible?'),
-    body('status').isLength({min: 10}).trim().withMessage('What is room status'),
-    sanitizeBody('roomNumber').trim().escape(),
-    sanitizeBody('handicapAccess').trim().escape(),
-    sanitizeBody('status').trim().escape(),
+    body('roomNumber').trim().withMessage('Missing room Number'),
+    body('handicapAccess').trim().withMessage('Is room handicap accessible?'),
+    body('status').trim().withMessage('What is room status'),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.render('room_create', {
+            res.render('room_update', {
                 title: 'Room Error',
-                _id: room._id,
+                //_id: room._id,
                 room: room, 
                 errors: errors.array()
             });
