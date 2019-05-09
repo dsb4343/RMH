@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Person = require('../objects/Person');
+//var Person = require('../objects/Person');
 var moment = require('moment');
 
 var Schema = mongoose.Schema;

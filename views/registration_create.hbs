@@ -6,7 +6,7 @@
         <label for="guest">Guest:</label><br>
             <select name="guest" required="true">
                 <option value="">Select One</option>
-                {{#each guests}}<option value="{{name}}">{{name}}</option>{{/each}}
+                {{#each guests}}<option value="{{_id}}">{{name}}</option>{{/each}}
             </select><br>
         <label for="patient">Patient:</label><br>
             <input name="patient" type="text" id="patient"><br>

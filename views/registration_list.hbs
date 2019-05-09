@@ -1,7 +1,7 @@
     <ul>
         {{#if registration_list}}
         {{#each registration_list}}
-        <li><a href="{{url}}">{{name}}</a> {{room.roomNumber}} {{checkedIn}} - {{checkedOut}}
+        <li><a href="{{url}}">{{guest.name}}</a> {{room.roomNumber}} {{checkedIn}} - {{checkedOut}}
             <a href="{{url}}/update">Update</a> 
             | <a href="{{url}}/delete">Delete</a>
         </li>
