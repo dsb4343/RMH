@@ -112,12 +112,8 @@ exports.registration_create_post = [
 
             registration.save(function (err, results) {
                 console.log(results);
-                if (err) { return next(err) };
-                res.render( 'registration_read', {
-                    title: 'Registration Details',
-                    registration: results
-                });
-                //res.redirect(registration.url);
+                if (err) { return next(err) };              
+                res.redirect(registration.url);
             });
         }
     }
@@ -139,10 +135,10 @@ exports.registration_delete_get = function(req, res, next) {
 
 // Handle registration delete on POST.
 exports.registration_delete_post = function(req, res, next) {
-    registration.findByIdAndRemove(req.body.id, function deleteregistration(err) {
+    Registration.findByIdAndDelete(req.params.id, function deleteRegistration(err) {
         if (err) { return next(err); }
         res.redirect('/users/registration');
-    })
+    });
 };
 
 // Display registration update form on GET.
@@ -162,12 +158,12 @@ exports.registration_update_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.registration==null) {
+        if (results==null) {
             var err = new Error('Registration not found');
             err.status = 404;
             return next(err);
         }
-        res.render('registration_create', { title: 'Update Registration', guest: results.guest, room: results.room, registration: results.registration})
+        res.render('registration_update', { title: 'Update Registration', guests: results.guest, rooms: results.room, registration: results.registration})
     })
 };
 

@@ -1,4 +1,4 @@
-<body>
+<h1>{{title}}</h1>
 <p> Guest: {{registration.guest.name}}</p>
 <p> Patient: {{registration.patient}}</p>
 <p> Staff: {{registration.staff}}</p>
@@ -8,5 +8,4 @@
 <p> Number of Keys: {{registration.numbKeys}}</p>
 <p> Items on Loan: {{registration.loans}}</p>
 <p> Comments: {{registration.comments}}</p>
-<a href=/users/Registration/{{registration._id}}/update> Update Registration</a>
-</body>
+<a href="{{registration.url}}/update"> Update Registration</a>

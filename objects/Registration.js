@@ -22,13 +22,13 @@ var RegistrationSchema = new Schema ({
 RegistrationSchema
 .virtual('url')
 .get(function(){
-    return '/users/registration/' + this._id;
+    return '/admin/registration/' + this._id;
 });
 
 RegistrationSchema
 .virtual('name')
 .get(function(){
-    return this.guest + ' ' + this.room.roomNumber;
+    return this.guest;
 });
 
 RegistrationSchema
