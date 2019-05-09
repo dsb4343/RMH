@@ -9,7 +9,7 @@ const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all registrations.
 exports.registration_list = function(req, res, next) {
-    Registration.find({}, 'guest')
+    Registration.find({}, 'guest room checkIn checkOut')
     .populate('guest')
     .populate('room')
     .exec(function (err, list_registrations){
@@ -28,11 +28,11 @@ exports.registration_read = function(req, res, next) {
             .exec(callback)
         },
         guest: function(callback) {
-            Person.find({ 'guest': req.params.id }, ['firstName', 'lastName', 'name'])
+            Person.find({ 'guest': req.params.id })
             .exec(callback);
         },
         room: function(callback) {
-            Room.find({ 'room': req.params.id }, ['roomNumber'])
+            Room.find({ 'room': req.params.id })
             .exec(callback);
         },
     
@@ -149,7 +149,7 @@ exports.registration_delete_post = function(req, res, next) {
 exports.registration_update_get = function(req, res, next) {
     async.parallel({ 
         registration:function(callback) {
-            Registration.FindById(req.params.id)
+            Registration.findById(req.params.id)
             .populate('guest')
             .populate('room')
             .exec(callback);
@@ -167,7 +167,7 @@ exports.registration_update_get = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('registration_create', { title: 'Update Registration', guests: results.guests, rooms: results.rooms, registration: results.registration})
+        res.render('registration_create', { title: 'Update Registration', guest: results.guest, room: results.room, registration: results.registration})
     })
 };
 

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Person = require('../objects/Person');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -27,7 +28,19 @@ RegistrationSchema
 RegistrationSchema
 .virtual('name')
 .get(function(){
-    return this.guest + ' ' + this.room.roomNumber + ' ' + this.checkIn + ' - ' + this.checkOut;
+    return this.guest + ' ' + this.room.roomNumber;
+});
+
+RegistrationSchema
+.virtual('checkedIn')
+.get(function(){
+    return moment(this.checkIn).format('ll')
+});
+
+RegistrationSchema
+.virtual('checkedOut')
+.get(function(){
+    return moment(this.checkOut).format('ll')
 });
 
 module.exports = mongoose.model('Registration', RegistrationSchema);

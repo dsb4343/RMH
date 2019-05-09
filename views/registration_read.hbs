@@ -1,12 +1,12 @@
 <body>
-<p> person: {{registration.guest.name}}</p>
+<p> Guest: {{registration.guest.name}}</p>
 <p> Patient: {{registration.patient}}</p>
 <p> Staff: {{registration.staff}}</p>
-<p> Room: {{room.roomNumber}}</p>
-<p> Checked In: {{registration.checkIn}}</p>
-<p> Checked Out: {{registration.checkOut}}</p>
-<p> Number of Keys: {{registration.numKeys}}</p>
+<p> Room: {{registration.room.roomNumber}}</p>
+<p> Checked In: {{registration.checkedIn}}</p>
+<p> Checked Out: {{registration.checkedOut}}</p>
+<p> Number of Keys: {{registration.numbKeys}}</p>
 <p> Items on Loan: {{registration.loans}}</p>
 <p> Comments: {{registration.comments}}</p>
-<a href=“/users/Registration/{{registration._id}}/update”> Update Registration</a>
+<a href=/users/Registration/{{registration._id}}/update> Update Registration</a>
 </body>
