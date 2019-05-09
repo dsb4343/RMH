@@ -20,10 +20,21 @@ RoomSchema
 })
 
 RoomSchema
-.virtual('name')
+.virtual('Number')
 .get(function() {
     return this.roomNumber;
 })
 
+RoomSchema
+.virtual('Handi')
+.get(function() {
+    return this.handicapAccess;
+})
+
+RoomSchema
+.virtual('Stat')
+.get(function() {
+    return this.status;
+})
 //Export for mongoose
 module.exports = mongoose.model('Room', RoomSchema);
