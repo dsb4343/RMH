@@ -4,12 +4,12 @@ var Room = require('../objects/Room');
 
 var async = require('async');
 
-const { body,validationResults } = require('express-validator/check');
+const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all registrations.
 exports.registration_list = function(req, res, next) {
-    Registration.find({}, 'guest')
+    Registration.find({}, 'guest room checkIn checkOut')
     .populate('guest')
     .populate('room')
     .exec(function (err, list_registrations){
@@ -28,11 +28,11 @@ exports.registration_read = function(req, res, next) {
             .exec(callback)
         },
         guest: function(callback) {
-            Registration.find({ 'guest': req.params.id })
+            Person.find({ 'guest': req.params.id })
             .exec(callback);
         },
         room: function(callback) {
-            Registration.find({ 'room': req.params.id })
+            Room.find({ 'room': req.params.id })
             .exec(callback);
         },
     
@@ -64,39 +64,19 @@ exports.registration_create_get = function(req, res, next) {
 
 // Handle registration create on POST.
 exports.registration_create_post = [
-    body('guest', 'Guest must not be empty.').isLength({ min:1 }).trim(),
+    body('guest', 'guest must not be empty.').isLength({ min:1 }).trim(),
     body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
     body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
     body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
-    body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim,
-    body('checkOut', 'Check Out must not be empty.').isLength({ min:1 }).trim,
+    body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim(),
     body('vehicle', 'Vehicle must not be empty.').isLength({ min:1 }).trim(),
     body('plateNum', 'Vehicle Plate Number must not be empty.').isLength({ min:1 }).trim(),
-    body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim,
-    body('loans', 'Loans must not be empty.').isLength({ min: 1 }).trim(),
-    body('comments', 'Comments must not be empty.').isLength({ min:1 }).trim(),
-    
+    body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim(),
     sanitizeBody('*').trim().escape(),
     
     (req, res, next) => {
-        const errors = validationResults(req);
-        
-        var registration = new Registration(
-        {
-            guest: req.body.guest,
-            patient: req.body.patient,
-            patientLoc: req.body.patientLoc,
-            staff: req.body.staff,
-            room: req.body.room,
-            checkIn: req.body.checkIn,
-            checkOut: req.body.checkOut,
-            vehicle: req.body.vehicle,
-            plateNum: req.body.plateNum,
-            numbKeys: req.body.numbKeys,
-            loans: req.body.loans,
-            comments: req.body.comments            
-        });
+        const errors = validationResult(req);
         if (!errors.isEmpty()) {
             async.parallel({
                 guest: function(callback) {
@@ -104,17 +84,35 @@ exports.registration_create_post = [
                 },
                 room: function(callback) {
                     Room.find(callback)
-                },
-                
-            }, function (err, results) {
-                if (err) { return next(err); }
-                res.render('registration_create', { title: 'Create Registration', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
-            });
+                }, 
+            }, 
+            function (err, results) {
+                console.log(results);
+                if (err) { return next(err) };
+                res.render('registration_read', { title: 'Create Registration', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
+            })
             return;
         }
         else {
-            registration.save(function (err) {
-                if (err) { return next(err); }
+            var registration = new Registration(
+                {
+                    guest: req.body.guest,
+                    patient: req.body.patient,
+                    patientLoc: req.body.patientLoc,
+                    staff: req.body.staff,
+                    room: req.body.room,
+                    checkIn: req.body.checkIn,
+                    checkOut: req.body.checkOut,
+                    vehicle: req.body.vehicle,
+                    plateNum: req.body.plateNum,
+                    numbKeys: req.body.numbKeys,
+                    loans: req.body.loans,
+                    comments: req.body.comments            
+                });
+
+            registration.save(function (err, results) {
+                console.log(results);
+                if (err) { return next(err) };              
                 res.redirect(registration.url);
             });
         }
@@ -137,41 +135,41 @@ exports.registration_delete_get = function(req, res, next) {
 
 // Handle registration delete on POST.
 exports.registration_delete_post = function(req, res, next) {
-    registration.findByIdAndRemove(req.body.id, function deleteregistration(err) {
+    Registration.findByIdAndDelete(req.params.id, function deleteRegistration(err) {
         if (err) { return next(err); }
         res.redirect('/users/registration');
-    })
+    });
 };
 
 // Display registration update form on GET.
 exports.registration_update_get = function(req, res, next) {
     async.parallel({ 
         registration:function(callback) {
-            Registration.FindById(req.params.id)
+            Registration.findById(req.params.id)
             .populate('guest')
             .populate('room')
             .exec(callback);
         },
         guest: function(callback) {
-            Guest.find(callback);
+            Person.find(callback);
         },
         room: function(callback) {
             Room.find(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.registration==null) {
+        if (results==null) {
             var err = new Error('Registration not found');
             err.status = 404;
             return next(err);
         }
-        res.render('registration_create', { title: 'Update Registration', guests: results.guests, rooms: results.rooms, registration: results.registration})
+        res.render('registration_update', { title: 'Update Registration', guests: results.guest, rooms: results.room, registration: results.registration})
     })
 };
 
 // Handle registration update on POST.
 exports.registration_update_post = [
-    body('guest', 'Guest must not be empty.').isLength({ min:1 }).trim(),
+    body('guest', 'guest must not be empty.').isLength({ min:1 }).trim(),
     body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
     body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
@@ -208,7 +206,7 @@ exports.registration_update_post = [
         if (!errors.isEmpty()) {
             async.parallel({
                 guest: function(callback) {
-                    Guest.find(callback)
+                    Person.find(callback)
                 },
                 room: function(callback) {
                     Room.find(callback)

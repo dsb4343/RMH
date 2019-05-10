@@ -28,7 +28,8 @@ exports.room_read = function(req, res, next) {
         console.log(results);
         res.render('room_read', {
             title: "Room Details",
-            room: results})
+            room: results
+        })
         })       
    // res.send('NOT IMPLEMENTED: room detail: ' + req.params.id);
 };
@@ -47,9 +48,7 @@ exports.room_create_post = [
     body('roomNumber').trim().withMessage('Missing room Number'),
     body('handicapAccess').trim().withMessage('Is room handicap accessible?'),
     body('status').trim().withMessage('What is room status'),
-    sanitizeBody('roomNumber').trim().escape(),
-    sanitizeBody('handicapAccess').trim().escape(),
-    sanitizeBody('status').trim().escape(),
+    sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);

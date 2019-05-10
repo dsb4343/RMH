@@ -1,9 +1,13 @@
-<body>
     <div>
     <fieldset style='width: 30%;'>
         <legend><h4>{{title}}</h4></legend>
-        <form action="/admin/registration/create" method="POST">
-        <label for="guest">Guest:</label><br><p>{{guest.name}}</p>
+        <form action="/users/Registration/create" method="POST">
+        <!--<label for="guest">Guest:</label><br><p>{{guests.name}}</p> -->
+        <label for="guest">Guest:</label><br>
+            <select name="guest" required="true">
+                <option value="">Select One</option>
+                {{#each guests}}<option value="{{_id}}">{{name}}</option>{{/each}}
+            </select><br>
         <label for="patient">Patient:</label><br>
             <input name="patient" type="text" id="patient"><br>
         <label for="patientLoc">Patient Location:</label><br>
@@ -13,7 +17,7 @@
         <label for="room">Room:</label><br>
             <select name="room" required="true">
                 <option value="">Select One</option>
-                {{#each rooms}}<option value="{{name}}">{{name}}</option>{{/each}}
+                {{#each rooms}}<option value="{{_id}}">{{name}}</option>{{/each}}
             </select><br>
         <label for="checkIn">Checked In: </label><br>
             <input name="checkIn" type="Date" id="check in"><br> 
@@ -31,4 +35,3 @@
             <input name="comments" type="text" id="comments"><br> 
             <input type="submit" value="Create Registration"> <br>   
     </form>
-</body>

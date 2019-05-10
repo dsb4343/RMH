@@ -1,10 +1,10 @@
-<body>
-<div class=“container-fluid>
-<div class=“row”>
-<p>Delete the following registration?</p>
-</div>
-<form action=“/admin/Registration/{{registration._id}}/delete” method=“POST”>
-<button type=“submit”>Delete</button>
-</form>
-</div>
-</body>
+<h1>{{title}}</h1>
+<p> Do you really want to delete this Registration? </p>
+<fieldset>
+    <form action="{{registration.url}}/delete" method="POST">
+        <p>Guest: {{registration.guest.name}}</p>
+        <p>Dates: {{registration.checkedIn}} - {{registration.checkedOut}}</p>
+        <p>Room: {{registration.room.roomNumber}}</p>
+        <button type="submit">Delete Registration</button>
+    </form>
+</fieldset>

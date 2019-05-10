@@ -1,0 +1,37 @@
+    <div>
+    <fieldset style='width: 30%;'>
+        <legend><h4>{{title}}</h4></legend>
+        <form action="{{registration.url}}" method="POST">
+        <!--<label for="guest">Guest:</label><br><p>{{guests.name}}</p> -->
+        <label for="guest">Guest:</label><br>
+            <select name="guest" required="true">
+                <option value="{{guest._id}}" ?selected="">Select One</option>
+                {{#each guests}}<option value="{{_id}}">{{name}}</option>{{/each}}
+            </select><br>
+        <label for="patient">Patient:</label><br>
+            <input name="patient" type="text" id="patient" value="{{registration.patient}}"><br>
+        <label for="patientLoc">Patient Location:</label><br>
+            <input name="patientLoc" type="text" id="patientLoc" value="{{registration.patientLoc}}"><br> 
+        <label for="staff">Staff:</label><br>
+            <input name="staff" type="text" id="staff" value="{{registration.staff}}"><br>
+        <label for="room">Room:</label><br>
+            <select name="room" required="true">
+                <option value="">Select One</option>
+                {{#each rooms}}<option value="{{_id}}">{{name}}</option>{{/each}}
+            </select><br>
+        <label for="checkIn">Checked In: </label><br>
+            <input name="checkIn" type="Date" id="checkIn" value="{{registration.checkIn}}"><br> 
+        <label for="checkOut">Checked Out: </label><br>
+            <input name="checkOut" type="Date" id="checkOut" value="{{registration.checkOut}}"><br>
+        <label for="vehicle">Vehicle:</label><br>
+            <input name="vehicle" type="text" id="vehicle" value="{{registration.vehicle}}"><br>
+        <label for="plateNum">Vehicle Plate Number:</label><br>
+            <input name="plateNum" type="text" id="plateNum" value="{{registration.plateNum}}"><br> 
+        <label for="numbKeys">Number of Keys: </label><br>
+            <input name="numbKeys" type="text" id="numbKeys" value="{{registration.numbKeys}}"><br>
+        <label for="loans">Items on Loan: </label><br>
+            <input name="loans" type="text" id="loans" value="{{registration.loans}}"><br>
+        <label for="comments">Comments: </label><br>
+            <input name="comments" type="text" id="comments" value="{{registration.comments}}"><br> 
+            <input type="submit" value="Update Registration"> <br>   
+    </form>

@@ -101,12 +101,12 @@ exports.person_create_post = [
                 emergencyContact: req.body.emergencyContact,
                 emergencyPhone: req.body.emergencyPhone
             });
-            person.save(function(err, person) {
-                console.log(person);
+            person.save(function(err, results) {
+                console.log(results);
                 if (err) {return next(err)};
                 res.render('person_read', {
                     title: 'Guest Details',
-                    person: person
+                    person: results
                 })
                 //res.redirect(Person.url);  //redirect ????
             });
@@ -142,14 +142,14 @@ exports.person_delete_post = function(req, res, next) {
 
 // Display person update form on GET.
 exports.person_update_get = function(req, res,next) {
-        Person.findById(req.params.id, function (err, person){
+        Person.findById(req.params.id, function (err, results){
             if(err) {return next(err)};
-            if(person == null) {
+            if(results == null) {
                 res.redirect('/users/person/');
             };
             res.render('person_update', {
                 title:'Update Guest Record',
-                person: person
+                person: results
             })
         })
     //res.send('NOT IMPLEMENTED: person update GET');

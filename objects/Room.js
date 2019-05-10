@@ -22,7 +22,7 @@ RoomSchema
 RoomSchema
 .virtual('Number')
 .get(function() {
-    return this.roomNumber;
+    return "Room " + this.roomNumber + " is " + this.status;
 })
 
 RoomSchema
