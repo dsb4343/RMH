@@ -62,11 +62,83 @@ exports.registration_create_get = function(req, res, next) {
     });
 };
 
-//Registrate an existing Guest
+//Register an existing Guest on GET
+exports.register_guest_get = function(req, res, next) {
+    async.parallel({
+        room: function(callback) {
+            Room.find(callback);
+        },
+        guest: function(callback) {
+            Person.findById(req.params.id, callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err) };
+        if (results.guest==null){
+            var err = new Error('Guest not found');
+            err.status = 404;
+            return next(err);
+        };
+        res.render('registration_create', {
+            title: 'Start returning guest registration', 
+            guests: results.guest, 
+            rooms: results.room
+        })
+    });
+};
 
-exports.register_guest = function(req, res, next) {
+//Register an existing guest on POST.
+exports.register_guest_post = [
+    body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
+    body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
+    body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
+    body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
+    body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim(),
+    body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim(),
+    sanitizeBody('*').trim().escape(),
     
-} 
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            async.parallel({
+                guest: function(callback) {
+                    Person.find(callback)
+                },
+                room: function(callback) {
+                    Room.find(callback)
+                }, 
+            }, 
+            function (err, results) {
+                console.log(results);
+                if (err) { return next(err) };
+                res.render('registration_read', { title: 'Create Registration', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
+            })
+            return;
+        }
+        else {
+            var registration = new Registration(
+                {
+                    guest: req.body.guest,
+                    patient: req.body.patient,
+                    patientLoc: req.body.patientLoc,
+                    staff: req.body.staff,
+                    room: req.body.room,
+                    checkIn: req.body.checkIn,
+                    checkOut: req.body.checkOut,
+                    vehicle: req.body.vehicle,
+                    plateNum: req.body.plateNum,
+                    numbKeys: req.body.numbKeys,
+                    loans: req.body.loans,
+                    comments: req.body.comments            
+                });
+
+            registration.save(function (err, results) {
+                console.log(results);
+                if (err) { return next(err) };              
+                res.redirect(registration.url);
+            });
+        }
+    }
+]; 
 
 // Handle registration create on POST.
 exports.registration_create_post = [
@@ -76,8 +148,6 @@ exports.registration_create_post = [
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
     body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
     body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim(),
-    body('vehicle', 'Vehicle must not be empty.').isLength({ min:1 }).trim(),
-    body('plateNum', 'Vehicle Plate Number must not be empty.').isLength({ min:1 }).trim(),
     body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim(),
     sanitizeBody('*').trim().escape(),
     
@@ -180,18 +250,12 @@ exports.registration_update_post = [
     body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),
     body('room', 'Room must not be empty.').isLength({ min:1 }).trim(),
-    body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim,
-    body('checkOut', 'Check Out must not be empty.').isLength({ min:1 }).trim,
-    body('vehicle', 'Vehicle must not be empty.').isLength({ min:1 }).trim(),
-    body('plateNum', 'Vehicle Plate Number must not be empty.').isLength({ min:1 }).trim(),
-    body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim,
-    body('loans', 'Loans must not be empty.').isLength({ min: 1 }).trim(),
-    body('comments', 'Comments must not be empty.').isLength({ min:1 }).trim(),
-    
+    body('checkIn', 'Check In must not be empty.').isLength({ min:1 }).trim(),
+    body('numbKeys', 'Number of Keys must not be empty.').isLength({ min: 1}).trim(),
     sanitizeBody('*').trim().escape(),
     
     (req, res, next) => {
-        const errors = validationResults(req);
+        const errors = validationResult(req);
         
         var registration = new Registration(
         {

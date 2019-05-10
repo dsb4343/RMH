@@ -28,7 +28,7 @@ RegistrationSchema
 RegistrationSchema
 .virtual('name')
 .get(function(){
-    return this.guest;
+    return this.guest.name;
 });
 
 RegistrationSchema
