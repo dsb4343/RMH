@@ -1,34 +1,14 @@
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-    <ul id="myUL">
-        {{#if donation_list}}
-        {{#each donation_list}}
-        <li><a href={{url}}>{{name}}</a>
-            <a href="{{url}}/update">Edit Donation Entry Information</a>
-        </li>
-        {{/each}}
-        {{else}}
-            <h2>
-                No Donation Entries Found
-            </h2>
-        {{/if}}
-    </ul>
-    <a href="/users/donation/create">Create New Donation Entry</a>
-<script>
-    function myFunction() {
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            }
-            else {
-                li[i].style.display = "none";
-            }
-        }
-    }
-</script>
+<ul>
+	{{#if donation_list}}
+	{{#each donation_list}}
+	<li><a href={{url}}>{{name}}</a>
+		<a href="{{url}}/update">Edit Donation Entry Information</a>
+	</li>
+	{{/each}}
+	{{else}}
+		<h2>
+			No Donation Entries Found
+		</h2>
+	{{/if}}
+</ul>
+<input type="button" value="Create New Donation Entry" class="btn-info" onclick="window.location.href='/users/donation/create'">

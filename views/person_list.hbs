@@ -1,36 +1,61 @@
-<body>
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-    <ul id="myUL">
-        {{#if guest_list}}
-        {{#each guest_list}}
-        <li><a href={{url}}>{{name}}</a>
-            <a href="{{url}}/update">Update</a>
-        </li>
-        {{/each}}
-        {{else}}
-            <h2>
-                No Guest's Found
-            </h2>
-        {{/if}}
-    </ul>
-    <a href="/users/person/create">Create New Guest</a>
-</body>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+<table id="myTable" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Email</th>
+        <th>Cell Phone</th>
+        <th></th>
+      </tr>
+    </thead>
+    {{#if guest_list}}
+	{{#each guest_list}}
+	<tr>
+        <td>
+            {{lastName}}
+        </td>
+        <td>
+			{{firstName}}
+        </td>
+        <td>
+			{{email}}
+        </td>
+        <td>
+			{{cellPhone}}
+        </td>
+        <td>
+            <input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
+        </td>
+    </tr>
+	{{/each}}
+	{{else}}
+		<h2>
+			No Guest's Found
+		</h2>
+	{{/if}}
+</table>
+
+<input type="button" value="New Guest" class="btn-info" onclick="window.location.href='/users/person/create'">
 
 <script>
 function myFunction() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("myUL");
-    li = ul.getElementsByTagName("li");
-    for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
-        txtValue = a.textContent || a.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
-    }
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } 
+      else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
 }
 </script>

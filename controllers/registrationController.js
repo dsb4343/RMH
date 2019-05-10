@@ -62,6 +62,12 @@ exports.registration_create_get = function(req, res, next) {
     });
 };
 
+//Registrate an existing Guest
+
+exports.register_guest = function(req, res, next) {
+    
+} 
+
 // Handle registration create on POST.
 exports.registration_create_post = [
     body('guest', 'guest must not be empty.').isLength({ min:1 }).trim(),
