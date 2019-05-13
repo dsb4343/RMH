@@ -26,6 +26,30 @@ PersonSchema
 })
 
 PersonSchema
+.virtual('First_name')
+.get(function() {
+    return this.firstName;
+})
+
+PersonSchema
+.virtual('Last_name')
+.get(function() {
+    return this.lastName;
+})
+
+PersonSchema
+.virtual('emailAddress')
+.get(function() {
+    return this.email;
+})
+
+PersonSchema
+.virtual('Cell_Phone')
+.get(function() {
+    return this.cellPhone;
+})
+
+PersonSchema
 .virtual('name')
 .get(function() {
     return this.lastName + ', ' + this.firstName;
