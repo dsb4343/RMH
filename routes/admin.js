@@ -4,12 +4,8 @@ var Person = require('../controllers/personController');
 var Room = require('../controllers/roomController');
 var Registration = require('../controllers/registrationController');
 var Donation = require('../controllers/donationController');
-var Guest = require('../controllers/guestController');
-var Patient = require('../controllers/patientController');
-var Staff = require('../controllers/staffController');
-var Dashboard = require('../controllers/dashboardController');
 
-router.get('/', Dashboard.index); //landing page
+router.get('/',); //landing page
 
 //Person Routes
 ///////////////////////////////////////////////
@@ -90,6 +86,7 @@ router.get('/Donation/:id', Donation.donation_read);
 
 router.get('/Donation', Donation.donation_list)
 
+/*
 //Guest Routes
 ///////////////////////////////////////////////
 
@@ -146,6 +143,8 @@ router.post('/Staff/:id/update', Staff.staff_update_post);
 router.get('/Staff/:id', Staff.staff_read);
 
 router.get('/Staff', Staff.staff_list)
+
+*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 module.exports = router;

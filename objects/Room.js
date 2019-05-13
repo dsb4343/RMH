@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 //Object
 var RoomSchema = new Schema({
-    roomNumber: {type: String, max: 10},
+    roomNumber: {type: Number, max: 10},
     handicapAccess: {type: String, max: 10},
     status: {type: String, max: 10},
 
@@ -16,7 +16,7 @@ var RoomSchema = new Schema({
 RoomSchema
 .virtual('url')
 .get(function(){
-    return '/admin/room/' + this._id;
+    return '/users/room/' + this._id;
 })
 
 RoomSchema

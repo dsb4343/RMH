@@ -22,7 +22,7 @@ var RegistrationSchema = new Schema ({
 RegistrationSchema
 .virtual('url')
 .get(function(){
-    return '/admin/registration/' + this._id;
+    return '/users/registration/' + this._id;
 });
 
 RegistrationSchema

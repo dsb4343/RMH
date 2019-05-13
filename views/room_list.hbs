@@ -1,4 +1,5 @@
-<table class="table table-bordered">
+<input type="text" id="myInput" placeholder="Search for rooms.." title="Type in a room">
+<table id="myTable" class="table table-bordered">
     <thead>
       <tr>
         <th>Room Number</th>
@@ -29,5 +30,26 @@
     {{/if}}
 </table>
 
-<input type="button" value="Add Room" class="btn-info" onclick="window.location.href='/admin/Room/create'">
+<input type="button" value="Add Room" class="btn-info" onclick="window.location.href='/users/Room/create'">
 
+<script>
+  function filterTable(event) {
+    var filter = event.target.value.toUpperCase();
+    var rows = document.querySelector("#myTable tbody").rows;
+    
+    for (var i = 0; i < rows.length; i++) {
+        var firstCol = rows[i].cells[0].textContent.toUpperCase();
+        var secondCol = rows[i].cells[1].textContent.toUpperCase();
+        var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+        if (
+          firstCol.indexOf(filter) > -1 
+          || secondCol.indexOf(filter) > -1 
+          || thirdCol.indexOf(filter) > -1
+          )
+          {rows[i].style.display = "";}
+        else {rows[i].style.display = "none";}      
+    }
+}
+
+document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
+</script>

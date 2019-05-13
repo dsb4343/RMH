@@ -22,7 +22,7 @@ var PersonSchema = new Schema({
 PersonSchema
 .virtual('url')
 .get(function(){
-    return '/admin/Person/' + this._id;
+    return '/users/Person/' + this._id;
 })
 
 PersonSchema
