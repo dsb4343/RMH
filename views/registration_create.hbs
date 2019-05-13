@@ -1,37 +1,75 @@
-    <div>
-    <fieldset style='width: 30%;'>
-        <legend><h4>{{title}}</h4></legend>
-        <form action="/users/Registration/create" method="POST">
-        <!--<label for="guest">Guest:</label><br><p>{{guests.name}}</p> -->
-        <label for="guest">Guest:</label><br>
-            <select name="guest" required="true">
-                <option value="">Select One</option>
-                {{#each guests}}<option value="{{_id}}">{{name}}</option>{{/each}}
-            </select><br>
-        <label for="patient">Patient:</label><br>
-            <input name="patient" type="text" id="patient"><br>
-        <label for="patientLoc">Patient Location:</label><br>
-            <input name="patientLoc" type="text" id="patientLoc"><br> 
-        <label for="staff">Staff:</label><br>
-            <input name="staff" type="text" id="staff"><br>
-        <label for="room">Room:</label><br>
-            <select name="room" required="true">
-                <option value="">Select One</option>
-                {{#each rooms}}<option value="{{_id}}">{{name}}</option>{{/each}}
-            </select><br>
-        <label for="checkIn">Checked In: </label><br>
-            <input name="checkIn" type="Date" id="check in"><br> 
-        <label for="checkOut">Checked Out: </label><br>
-            <input name="checkOut" type="Date" id="check out"><br>
-        <label for="vehicle">Vehicle:</label><br>
-            <input name="vehicle" type="text" id="vehicle"><br>
-        <label for="plateNum">Vehicle Plate Number:</label><br>
-            <input name="plateNum" type="text" id="plateNum"><br> 
-        <label for="numbKeys">Number of Keys: </label><br>
-            <input name="numbKeys" type="text" id="number of keys"><br>
-        <label for="loans">Items on Loan: </label><br>
-            <input name="loans" type="text" id="loans"><br>
-        <label for="comments">Comments: </label><br>
-            <input name="comments" type="text" id="comments"><br> 
-            <input type="submit" value="Create Registration"> <br>   
-    </form>
+<p>Use the following form to add a new registration to the guest's record.</p>
+
+<form action="/admin/Registration/create" method="POST">
+	<p>Guest Name: {{guests.name}}</p>
+	<input name="guest" type="hidden" id="guest" value="{{guests._id}}">
+	<br>
+	<label for="patient">Patient Name:</label><br>
+	<input name="patient" type="text" id="patient"><br>
+        
+	<label for="patientLoc">Patient Room:</label><br>
+	<input name="patientLoc" type="text" id="patientLoc"><br> 
+	
+	<br>
+	
+	<label for="checkIn">Check In Date: </label>
+	<input name="checkIn" type="Date" id="checkIn"><br>
+	<br>
+	<br>
+	
+	<label for="checkOut">Check Out Date: </label>
+	<input type="Date" name="checkOut" id="checkOut">
+	
+	<br>
+	<br>
+	
+	<select size="1" name="room" id="room">
+	<option>Select a room...</option>
+	{{#each rooms}}
+		<option value="{{_id}}">{{Number}}</option>
+	{{/each}}
+	</select>
+	
+	<br>
+	<br>
+	
+	<p>Select Deposit Type:</p>
+	<input type="radio" name="deposit" id="deposit" value="Check">Check<br>
+	<input type="radio" name="deposit" id="deposit" value="Cash">Cash<br>
+	<input type="radio" name="deposit" id="deposit" value="Credit">Credit<br>
+	
+	<br>
+	
+	<label for="numbKeys"># of Keys issued: </label>
+	<input type="text" name="numbKeys" id="numbKeys">
+	
+	<br>
+	
+	<p>Items on Loan:</p><br>
+	<textarea name="loans" id="loans" cols="40" rows="4">Enter items on loan here</textarea>
+	
+	<br><br>
+	
+	<p>Comments:</p><br>
+	<textarea name="comments" id="comments" cols="40" rows="4">Comments</textarea>
+	
+	<br>
+	
+	<label for="vehicle">Car Model: </label>
+	<input type="text" name="vehicle" id="vehicle">
+	
+	<br>
+	
+	<label for="plateNum">License Plate Number: </label>
+	<input type="text" name="plateNum" id="plateNum">
+	
+	<br>
+	
+	<label for="staff">Staff Initials: </label>
+	<input type="text" name="staff" id="staff">
+	
+	<br>
+	
+	<input type="submit" value="Add new Stay" class="btn-info"><br>
+	
+</form>
