@@ -1,9 +1,5 @@
-<body>
-	<h1>{{title}}</h1>
-    <h1>{{person.name}}</h1>
-	<h2>{{person._id}}</h2>
-    <body>
-<p>Use the following form to add a new Guest to the database. </p>
+<p>You are currently editing a guest's records. Click "Update Records" to save changes.</p>
+
 <form action="{{person.url}}/update" method="POST">
 	<label for="name">First Name:</label>
 	<input type="text" name="firstName" id="firstName" placeholder="required" value="{{person.firstName}}" autofocus></input>
@@ -16,12 +12,12 @@
 	<br>
 	
 	<label for="email">Email Address:</label>
-	<input type="text" name="email" id="email" placeholder="Required" value="{{person.email}}"></input>
+	<input type="text" name="email" id="email" placeholder="Required" value="{{person.email}}"</input>
 	<br>
 	<br>
 	
 	<label for="phone">Home Phone:</label>
-	<input type="tel" name="phone" id="phone" placeholder="" maxlength="11" value="{{person.homePhone}}"></input>
+	<input type="tel" name="phone" id="phone" placeholder="" maxlength="11" value="{{person.phone}}"></input>
 	<br>
 	<br>
 	
@@ -60,14 +56,6 @@
 	<br>
 	<br>
 	
-	<input type="submit" value="Update Guest Record"><br>
+	<input type="submit" value="Update Records" class="btn-info"><br>
 	
 </form>
-
-{{#if errors}}
-    {{#each errors}}
-	<p>{{this.msg}}</p>
-	{{/each}}
-	{{/if}}
-</body>
-</body>
