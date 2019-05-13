@@ -1,5 +1,6 @@
 var Person = require('../objects/Person');
 var Donation = require('../objects/Donation');
+var Registration = require('../objects/Registration');
 var async = require('async');
 const {body, validationResult} = require('express-validator/check');
 const {sanitizeBody} = require('express-validator/filter');
@@ -18,18 +19,23 @@ exports.person_list = function(req, res, next) {
 
 // Display detail page for a specific person.
 exports.person_read = function(req, res, next) {
-/*    async.parallel({
+    async.parallel({
         person: function(callback){
-            Person.findById(req.params._id)
+            Person.findById(req.params.id)
             .exec(callback);
         },
         donation: function(callback){
-            Donation.findById(req.params._id)
+            Donation.find({'guest': req.params.id}, ['donationAmount', 'donationType', 'donationDate'])
             .exec(callback);
         },
+        registration: function(callback){
+            Registration.find({'guest': req.params.id})
+            .exec(callback);
+        }
+    },
         function (err, results) {
             if (err) {return next(err)};
-            if (results.Person==null) {
+            if (results.person==null) {
                 var err = new Error('Guest not found');
                 err.status = 404;
                 return next(err);
@@ -37,14 +43,15 @@ exports.person_read = function(req, res, next) {
             res.render('person_read', {
                 title: 'Guest Details',
                 person: results.person,
-                donation: results.donation
+                donation: results.donation,
+                registration: results.registration
             })
         }
-    });
-*/    
-
+    )
+};
+    
+/*
     Person.findById(req.params.id)
-        //.populate('person')
         .exec(function(err, results){
             if (err) {return next(err)};
             if (results==null){
@@ -60,7 +67,7 @@ exports.person_read = function(req, res, next) {
 
     //res.send('NOT IMPLEMENTED: person detail: ' + req.params.id);
 };
-
+*/
 // Display person create form on GET.
 exports.person_create_get = function(req, res) {
         res.render('person_create', {

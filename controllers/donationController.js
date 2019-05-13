@@ -1,5 +1,4 @@
 var Donation = require('../objects/Donation');
-
 var Person = require('../objects/Person');
 
 var async = require('async');
@@ -9,8 +8,8 @@ const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all donations.
 exports.donation_list = function(req, res, next) {
-    Donation.find({}, 'person')
-    .populate('person')
+    Donation.find({}, 'guest donationType donationDate donationAmount')
+    .populate('guest')
     .sort([['lastName', 'ascending']])
     .exec(function (err, list_donations) {
         if (err) {return next(err)};
@@ -24,31 +23,37 @@ exports.donation_read = function(req, res, next) {
     async.parallel({
         donation: function(callback) {
             Donation.findById(req.params.id)
-            .populate('person')
+            .populate('guest')
             .exec(callback)
         },
-        person: function(callback) {
-            Donation.find({ 'person': req.params.id })
+        guest: function(callback) {
+            Person.find({ 'guest': req.params.id })
             .exec(callback);
         },
+    },
         function (err, results) {
             if (err) {return next(err)};
-            if (results == null) {
+            if (results.donation == null) {
                 var err = new Error('Donation not found');
                 err.status = 404;
                 return next(err)
             };
             console.log(results);
-            res.render('donation_read', { title: "Donation Details", donation: results})
-        }
+            res.render('donation_read', { 
+                title: "Donation Details", 
+                donation: results.donation,
+                guest: results.guest,
+
+            })
+        })
     // res.send('NOT IMPLEMENTED: donation detail: ' + req.params.id);
-    });
 };
 // Display donation create form on GET.
+///////////////////////////////////////NOT IN USE
 exports.donation_create_get = function(req, res, next) {
 
     //async.parallel({
-    //    person: function(callback) {
+    //    guest: function(callback) {
     //        Person.find(callback);        
     //    },
     //    function (err, results) {
@@ -56,23 +61,39 @@ exports.donation_create_get = function(req, res, next) {
     //        console.log(results);
             res.render('donation_create', {
                 title: 'New Donation',
-    //            person: results.person               
+    //            guests: results.guest               
     //        });
     //    }
     })
 // res.send('NOT IMPLEMENTED: donation create GET');
 };
 
+// Display donation create form on GET.
+exports.donator_create_get = function(req, res, next) {
+    Person.findById(req.params.id)
+        //.populate('guest')
+        .exec(function(err, results){
+            if (err) {return next(err)};
+            if (results==null){
+                var err = new Error('Guest not found');
+                err.status = 404;
+                return next(err);
+            };
+            res.render('donation_create', {
+                title: 'Start new donation',
+                guests: results
+            })
+        })
+// res.send('NOT IMPLEMENTED: donation create GET');
+};
+
 // Handle donation create on POST.
 exports.donation_create_post = [
     //Validation
-    body('person').isLength({min: 1}).trim().withMessage('Missing Person'),   
+    body('guest').isLength({min: 1}).trim().withMessage('Missing Guest'),   
     body('donationType').isLength({min: 1}).trim().withMessage('Missing Donation Type'),
     body('donationDate').isLength({min: 1}).trim().withMessage('Missing Donation Date'),
     body('donationAmount').isLength({min: 1}).trim().withMessage('Missing Donation Amount'),
-    //body('AdoptionDate').isLength({min: 1}).trim().withMessage('Missing Adoption Date'),
-    //body('AdoptionMessage').isLength({min: 1}).trim().withMessage('Missing Adoption Message'),
-    
     sanitizeBody('*').trim().escape(),
 
     (req, res, next) => {
@@ -86,7 +107,7 @@ exports.donation_create_post = [
         }
         else {
             var donation = new Donation({
-                guest: req.body.person,
+                guest: req.body.guest,
                 donationType: req.body.donationType,
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,
@@ -106,7 +127,7 @@ exports.donation_create_post = [
 // Display donation delete form on GET.
 exports.donation_delete_get = function(req, res, next) {
     Donation.findById(req.params.id)
-    //.populate('person')
+    //.populate('guest')
     .exec(function(err,results) {
         if (err) {return next(err)};       
         if (results==null) {res.redirect('/donation')};
@@ -132,10 +153,10 @@ exports.donation_update_get = function(req, res) {
     async.parallel({
         donation: function(callback) {
             Donation.findById(req.params.id)
-            .populate('person')
+            .populate('guest')
             .exec(callback);
         },  
-        person: function(callback) {
+        guest: function(callback) {
             Person.find(callback);
         },      
     }),
@@ -146,7 +167,7 @@ exports.donation_update_get = function(req, res) {
             err.status = 404;
             return next(err);
         }
-        res.render('donation_update', { title: 'Update Donation', donation: results.donation, person: results.person})
+        res.render('donation_update', { title: 'Update Donation', donation: results.donation, guests: results.guest})
     };    
 // res.send('NOT IMPLEMENTED: donation update GET');
 };
@@ -154,7 +175,7 @@ exports.donation_update_get = function(req, res) {
 // Handle donation update on POST.
 exports.donation_update_post = [
     //Validation
-    body('person').isLength({min: 1}).trim().withMessage('Missing Person'),   
+    body('guest').isLength({min: 1}).trim().withMessage('Missing guest'),   
     body('donationType').isLength({min: 1}).trim().withMessage('Missing Donation Type'),
     body('donationDate').isLength({min: 1}).trim().withMessage('Missing Donation Date'),
     body('donationAmount').isLength({min: 1}).trim().withMessage('Missing Donation Amount'),
@@ -176,7 +197,7 @@ exports.donation_update_post = [
         }
         else {
             var donation = new Donation({
-                person: req.body.person,
+                guest: req.body.guest,
                 donationType: req.body.donationType,
                 donationDate: req.body.donationDate,
                 donationAmount: req.body.donationAmount,

@@ -18,7 +18,11 @@
 			{{checkedIn}}
 		</td>
 		<td>
-			{{checkedOut}}
+            {{#if checkedOut}}
+            {{checkedOut}}
+            {{else}}
+			<p>Not checked out</p>
+            {{/if}}
 		</td>
 		<td>
 			<input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
@@ -29,8 +33,6 @@
         <h1>No Registration Records</h1>
     {{/if}}
 </table>
-
-<input type="button" value="New Registration" class="btn-info" onclick="window.location.href='/users/Registration/create'">
 
 <script>
   function filterTable(event) {

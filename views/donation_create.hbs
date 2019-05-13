@@ -1,16 +1,8 @@
 <p>Use the following form to add a new donation entry to the database. </p>
 
 <form action="/users/Donation/create" method="POST">
-	<p>Guest Name: {{name}}</p>
-	
-	<!--<label for="firstName">First Name:</label>
-	<input type="text" name="firstName" id="firstName" placeholder="Required" autofocus>
-	<br>
-	<br>
-	
-	<label for="lastName">Last Name:</label>
-	<input type="text" name="lastName" id="lastName" placeholder="Required" autofocus>-->
-	<br>
+	<label for="guest">Guest Name: {{guests.name}}</label><br>
+	<input name="guest" type="hidden" value="{{guests._id}}" id="guest">
 	<br>
 	
 	<label for="donationType">Donation Type:</label>

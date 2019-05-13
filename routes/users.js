@@ -74,6 +74,10 @@ router.get('/Donation/create', Donation.donation_create_get);
 
 router.post('/Donation/create', Donation.donation_create_post);
 
+router.get('/Donation/:id/create', Donation.donator_create_get);
+
+router.post('/Donation/:id/create', Donation.donation_create_post);
+
 router.get('/Donation/:id/delete', Donation.donation_delete_get);
 
 router.post('/Donation/:id/delete', Donation.donation_delete_post);

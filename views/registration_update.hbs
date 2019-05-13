@@ -71,3 +71,20 @@
 	<input type="submit" value="Save Stay Details" class="btn-info"><br>
 	
 </form>
+
+<script>
+  var radios = document.querySelectorAll('input[type=radio]');
+  var nameCount = {};
+  for (var i = 0, name; i < radios.length; i++) {
+    name = radios[i].name;
+    if (!(name in nameCount)) nameCount[name] = 0;
+    nameCount[name]++;
+  }
+  var radioToCheck;
+  for (name in nameCount) {
+    if (nameCount[name] === 5) {
+      radioToCheck = document.getElementsByName(name)[3];
+      radioToCheck.checked = true;
+    }
+  }
+</script>
