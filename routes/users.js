@@ -51,9 +51,9 @@ router.get('/Registration/create', Registration.registration_create_get);
 
 router.post('/Registration/create', Registration.registration_create_post);
 
-router.get('/Registration/:id/create', Registration.register_guest_get);
+router.get('/Registration/:id/create', Registration.registration_guest_get);
 
-router.post('/Registration/:id/create', Registration.register_guest_post);
+router.post('/Registration/:id/create', Registration.registration_guest_post);
 
 router.get('/Registration/:id/delete', Registration.registration_delete_get);
 
@@ -74,7 +74,7 @@ router.get('/Donation/create', Donation.donation_create_get);
 
 router.post('/Donation/create', Donation.donation_create_post);
 
-router.get('/Donation/:id/create', Donation.donator_create_get);
+router.get('/Donation/:id/create', Donation.donation_create_get);
 
 router.post('/Donation/:id/create', Donation.donation_create_post);
 

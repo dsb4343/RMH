@@ -63,7 +63,7 @@ exports.registration_create_get = function(req, res, next) {
 };
 
 //Register an existing Guest on GET
-exports.register_guest_get = function(req, res, next) {
+exports.registration_guest_get = function(req, res, next) {
     async.parallel({
         room: function(callback) {
             Room.find(callback);
@@ -87,7 +87,7 @@ exports.register_guest_get = function(req, res, next) {
 };
 
 //Register an existing guest on POST.
-exports.register_guest_post = [
+exports.registration_guest_post = [
     body('patient', 'Patient must not be empty.').isLength({ min:1 }).trim(),
     body('patientLoc', 'Patient Location must not be empty.').isLength({ min:1 }).trim(),
     body('staff', 'Staff must not be empty.').isLength({ min:1 }).trim(),

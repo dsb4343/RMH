@@ -10,7 +10,7 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.donation_list = function(req, res, next) {
     Donation.find({}, 'guest donationType donationDate donationAmount')
     .populate('guest')
-    .sort([['lastName', 'ascending']])
+    .sort([['name', 'ascending']])
     .exec(function (err, list_donations) {
         if (err) {return next(err)};
         res.render('donation_list', { title: 'Donation List', donation_list: list_donations});
@@ -69,7 +69,7 @@ exports.donation_create_get = function(req, res, next) {
 };
 
 // Display donation create form on GET.
-exports.donator_create_get = function(req, res, next) {
+exports.donation_create_get = function(req, res, next) {
     Person.findById(req.params.id)
         //.populate('guest')
         .exec(function(err, results){
