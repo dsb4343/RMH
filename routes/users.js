@@ -5,7 +5,7 @@ var Room = require('../controllers/roomController');
 var Registration = require('../controllers/registrationController');
 var Donation = require('../controllers/donationController');
 
-//router.get('/', Dashboard.index); //landing page
+router.get('/', Registration.registration_list); //landing page
 
 //Person Routes
 ///////////////////////////////////////////////

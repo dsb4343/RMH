@@ -1,88 +1,93 @@
 <main class="">
-    <h1 class="">{{title}}</h1>
-    <p class="">Welcome to the {{title}}</p>
-        <div class="row">
-            <p>This is Div 1</p>
-            <div class="col-md-6 border" style="min-height: 400px">
-                <p>This is the Left Div</p>
-                <button type="button" class="btn btn-success btn-lg">Start Guest Registration!</button>
-                <p>This will display current number of guests and number of rooms available</p>
-                <div class="row">
-                    <div class="col-sm-6 border">
-                        <p>This is for # of current guests</p>
-                    </div>
-                    <div class="col-sm-6 border">
-                        <p>This is for # of rooms available</p>
-                    </div>
-
+  <h1 class="">{{title}}</h1>
+  <p class="">Welcome to the {{title}}</p>
+    <div class="row">
+        <p>This is Div 1</p>
+        <div class="col-md-6 border" style="min-height: 400px">
+            <p>This is the Left Div</p>
+            <button type="button" class="btn btn-success btn-lg" onclick="window.location.href='/users/person'">Start Guest Registration!</button>
+            <p>This will display current number of guests and number of rooms available</p>
+            <div class="row">
+                <div class="col-sm-6 border">
+                    <p>This is for # of current guests</p>
+                </div>
+                <div class="col-sm-6 border">
+                    <p>This is for # of rooms available</p>
                 </div>
 
             </div>
-            <div class="col-md-6 border" style="min-height: 400px">
-                <p>This is the Right Div</p>
-                <p>This block is reserved for Adopt-A-Day sponsor and message</p>
 
-            </div>
-                <p>This ends Div 1</p>
         </div>
+        <div class="col-md-6 border" style="min-height: 400px">
+            <p>This is the Right Div</p>
+            <p>This block is reserved for Adopt-A-Day sponsor and message</p>
 
-
-        <div class="border">
-            <table id="myTable" class="table table-bordered">
-            <input type="text" id="myInput" placeholder="Search for names.." title="Type in a name">
-                <thead>
-                <tr>
-                    <th>Guest</th>
-                    <th>Check-In</th>
-                    <th>Check-Out</th>
-                    <th></th>
-                </tr>
-                </thead>
-                {{#if registration.registration_list}}
-                {{#each registration.registration_list}}
-                <tr>
-                    <td>
-                        {{name}}
-                    </td>
-                    <td>
-                        {{checkedIn}}
-                    </td>
-                    <td>
-                        {{#if checkedOut}}
-                        {{checkedOut}}
-                        {{else}}
-                        <p>Not checked out</p>
-                        {{/if}}
-                    </td>
-                    <td>
-                        <input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
-                    </td>
-                </tr>
-                {{/each}}
-                {{else}}
-                    <h3>No Registration Records</h3>
-                {{/if}}
-            </table>
-        <script>
-        function filterTable(event) {
-            var filter = event.target.value.toUpperCase();
-            var rows = document.querySelector("#myTable tbody").rows;
-            
-            for (var i = 0; i < rows.length; i++) {
-                var firstCol = rows[i].cells[0].textContent.toUpperCase();
-                var secondCol = rows[i].cells[1].textContent.toUpperCase();
-                var thirdCol = rows[i].cells[2].textContent.toUpperCase();
-                if (
-                firstCol.indexOf(filter) > -1 
-                || secondCol.indexOf(filter) > -1 
-                || thirdCol.indexOf(filter) > -1
-                )
-                {rows[i].style.display = "";}
-                else {rows[i].style.display = "none";}      
-            }
-        }
-        document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
-        </script>
         </div>
+            <p>This ends Div 1</p>
+    </div>
+
+
+<!-- LIST OF GUESTS CURRENTLY STAYING IN RMH -->
+
+    <div class="border">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="text" id="myInput" placeholder="Search by last name, phone, or email." aria-label="Search">
+      </div>
+      <table id="myTable" class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Guest</th>
+          <th>Check-In</th>
+          <th>Check-Out</th>
+          <th></th>
+        </tr>
+        </thead>
+        {{#if registration_list}}
+        {{#each registration_list}}
+        <tr>
+          <td>
+            {{name}}
+          </td>
+          <td>
+            {{checkedIn}}
+          </td>
+          <td>
+            {{#if checkedOut}}
+            {{checkedOut}}
+            {{else}}
+            <p>Not checked out</p>
+            {{/if}}
+          </td>
+          <td>
+            <input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
+          </td>
+        </tr>
+        {{/each}}
+        {{else}}
+          <h3>No Registration Records</h3>
+        {{/if}}
+      </table>
+    <script>
+    function filterTable(event) {
+      var filter = event.target.value.toUpperCase();
+      var rows = document.querySelector("#myTable tbody").rows;
+      for (var i = 0; i < rows.length; i++) {
+        var firstCol = rows[i].cells[0].textContent.toUpperCase();
+        var secondCol = rows[i].cells[1].textContent.toUpperCase();
+        var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+        if (
+          firstCol.indexOf(filter) > -1 
+          || secondCol.indexOf(filter) > -1 
+          || thirdCol.indexOf(filter) > -1
+        )
+        {rows[i].style.display = "";}
+        else {rows[i].style.display = "none";}      
+      }
+    }
+    document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
+    </script>
+    </div>
 </main>
 

@@ -14,7 +14,8 @@ exports.registration_list = function(req, res, next) {
     .populate('room')
     .exec(function (err, list_registrations){
         if (err) { return next(err); }
-        res.render('registration_list', {title: 'Registration List', registration_list: list_registrations });
+        res.render('index', {title: 'Rebacca Morrison House', registration_list: list_registrations });
+        res.render('registration_list', { registration_list: list_registrations });
     });
 };
 
@@ -78,8 +79,8 @@ exports.registration_guest_get = function(req, res, next) {
             err.status = 404;
             return next(err);
         };
-        res.render('registration_create', {
-            title: 'Start returning guest registration', 
+        res.render('registration_check_in', {
+            title: 'Check In Guest Form', 
             guests: results.guest, 
             rooms: results.room
         })
@@ -110,7 +111,7 @@ exports.registration_guest_post = [
             function (err, results) {
                 console.log(results);
                 if (err) { return next(err) };
-                res.render('registration_read', { title: 'Create Registration', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
+                res.render('registration_read', { title: 'Check In Complete', guest: results.guest, room: results.room, registration: registration, errors: errors.array() });
             })
             return;
         }

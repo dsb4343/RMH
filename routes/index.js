@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var Person = require('../controllers/personController');
+var Room = require('../controllers/roomController');
+var Registration = require('../controllers/registrationController');
+var Donation = require('../controllers/donationController');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Rebecca Morrison House' });
-});
+router.get('/', Registration.registration_list)
 
 router.get('/about', function(req, res, next) {
 	res.render('about', {title: 'About Us' });
