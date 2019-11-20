@@ -177,7 +177,7 @@ exports.person_update_post = [
         if (!errors.isEmpty()) {
             res.render('person_update', {
                 title: 'Update Person Failed',
-                _id: person.id,
+                //_id: person.id,
                 person: person,
                 errors: errors.array(),
             });

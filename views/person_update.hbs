@@ -1,61 +1,85 @@
-<p>You are currently editing a guest's records. Click "Update Records" to save changes.</p>
+<div class="container">
+  <h2>{{title}}</h2>
+  <p>You are currently editing a guest's records. Click "Update Records" to save changes.</p>
+  <form class="form-horizontal" action="{{person.url}}/update" method="POST">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="lastName">Last Name: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="lastName" id="lastName" value="{{person.lastName}}">
+      </div>
+    </div>
 
-<form action="{{person.url}}/update" method="POST">
-	<label for="name">First Name:</label>
-	<input type="text" name="firstName" id="firstName" placeholder="required" value="{{person.firstName}}" autofocus></input>
-	<br>
-	<br>
-	
-	<label for="lastName">Last Name:</label>
-	<input type="text" name="lastName" id="lastName" placeholder="required" value="{{person.lastName}}" autofocus></input>
-	<br>
-	<br>
-	
-	<label for="email">Email Address:</label>
-	<input type="text" name="email" id="email" placeholder="Required" value="{{person.email}}"</input>
-	<br>
-	<br>
-	
-	<label for="phone">Home Phone:</label>
-	<input type="tel" name="phone" id="phone" placeholder="" maxlength="11" value="{{person.phone}}"></input>
-	<br>
-	<br>
-	
-	<label for="cellPhone">Cell Phone:</label>
-	<input type="tel" name="cellPhone" id="cellPhone" placeholder="Required" maxlength="11" value="{{person.cellPhone}}"></input>
-	<br>
-	<br>
-	
-	<label for="homeAddress">Home Address:</label>
-	<input type="text" name="homeAddress" id="homeAddress" placeholder="" value="{{person.homeAddress}}"></input>
-	<br>
-	<br>
-	
-	<label for="city">City:</label>
-	<input type="text" name="city" id="city" value="{{person.city}}"></input>
-	<br>
-	<br>
-	
-	<label for="state">State:</label>
-	<input type="text" name="state" id="state" value="{{person.state}}"></input>
-	<br>
-	<br>
-	
-	<label for="zip">ZIP:</label>
-	<input type="text" name="zip" id="zip" value="{{person.zip}}"></input>
-	<br>
-	<br>
-	
-	<label for="emergencyContact">Emergency Contact:</label>
-	<input type="text" name="emergencyContact" id="emergencyContact" value="{{person.emergencyContact}}"></input>
-	<br>
-	<br>
-	
-	<label for="emergencyPhone">Emergency Phone Number:</label>
-	<input type="tel" name="emergencyPhone" id="emergencyPhone" value="{{person.emergencyPhone}}"></input>
-	<br>
-	<br>
-	
-	<input type="submit" value="Update Records" class="btn-info"><br>
-	
-</form>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="firstName">First Name:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="firstName" id="firstName" value="{{person.firstName}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="cellPhone">Cell Phone:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="cellPhone" id="cellPhone" value="{{person.cellPhone}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="email">Email:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="email" id="email" value="{{person.email}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="homePhone">Home Phone:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="homePhone" id="homePhone" value="{{person.homePhone}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="homeAddress">Home Address:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="homeAddress" id="homeAddress" value="{{person.homeAddress}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="city">City:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="city" id="city" value="{{person.city}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="state">State:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="state" id="state" value="{{person.state}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="zipCode">ZipCode:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="zipCode" id="zipCode" value="{{person.zipCode}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="emergencyContact">Emergency Contact:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="emergencyContact" id="emergencyContact" value="{{person.emergencyContact}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="emergencyPhone">Emergency Phone:</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="emergencyPhone" id="emergencyPhone" value="{{person.emergencyPhone}}">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg" value="Update record">Update Record</button>
+  </form>
+</div>
+

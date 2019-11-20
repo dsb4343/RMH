@@ -1,21 +1,85 @@
-<p>First Name: {{person.firstName}}</p>
-<p>Last Name: {{person.lastName}}</p>
-<p>Cell Phone: {{person.cellPhone}}</p>
-<p>Home Phone: {{person.homePhone}}</p>
-<p>Home Address: {{person.homeAddress}}</p>
-<p>City: {{person.city}}</p>
-<p>State: {{person.state}}</p>
-<p>Zip Code: {{person.zipCode}}</p>
-<p>Emergency Contact: {{person.emergencyContact}}</p>
-<p>Emergency Contact Phone Number: {{person.emergencyPhone}}</p>
-
-<input type="button" value="Edit Details" class="btn-info" onclick="window.location.href='{{person.url}}/update'">
-<input type="button" value="Delete" class="btn-info" onclick="window.location.href='{{person.url}}/delete'">
-<input type="button" value="Start new registration" class="btn-info" onclick="window.location.href='../../users/registration/{{person.id}}/create'">
-<input type="button" value="Start new donation" class="btn-info" onclick="window.location.href='../../users/donation/{{person.id}}/create'">
+<div class="container">
+  <h2>{{title}}</h2>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="guest">Last Name:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" type="text" id="guest">{{person.lastName}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="guest">First Name:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" type="text" id="guest">{{person.firstName}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="email">Email:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="email" type="text" id="email">{{person.email}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="cellPhone">Cell Phone:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="cellPhone" type="text" id="cellPhone">{{person.cellPhone}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="homePhone">Home Phone:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="homePhone" type="text" id="homePhone">{{person.homePhone}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="homeAddress">Home Address:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="homeAddress"  type="text" id="homeAddress">{{person.homeAddress}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="city">City:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="city" type="text" id="city">{{person.city}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="state">State:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="state"  type="text" id="state">{{person.state}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="zipCode">ZipCode:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="zipCode" type="text" id="zipCode">{{person.zipCode}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="emergencyContact">Emergency Contact:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="emergencyContact" type="text" id="emergencyContact">{{person.emergencyContact}}</Label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="emergencyPhone">Emergency Phone:</label>
+      <div class="sol-sm-10">
+        <Label class="form-control" name="emergencyPhone" type="text" id="emergencyPhone">{{person.emergencyPhone}}</Label>
+      </div>
+    </div>
+  </form>
+</div>
+<button type="button" class="btn btn-success btn-lg" value="Edit Details" onclick="window.location.href='{{person.url}}/update'">Edit Details</button>
+<button type="button" class="btn btn-success btn-lg" value="Delete" onclick="window.location.href='{{person.url}}/delete'">Delete</button>
+<button type="button" class="btn btn-success btn-lg" value="Start new registration" onclick="window.location.href='/users/registration/{{person.id}}/create'">Start New Registration</button>
+<button type="button" class="btn btn-success btn-lg" value="Start new donation" onclick="window.location.href='/users/donation/{{person.id}}/create'">Start New Donation</button>
 <br><br>
 <!--           DONATATION               -->
-<input type="text" id="myInput" placeholder="Search for donation records.." title="Search">
+<div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+  <i class="fas fa-search" aria-hidden="true"></i>
+  <input class="form-control form-control-sm ml-3 w-75" type="text" id="myInput" placeholder="Search for donation records" aria-label="Search">
+</div>
 <table id="myTable" class="table table-bordered">
     <thead>
       <tr>
@@ -32,12 +96,12 @@
 			{{donationDate1}}
 		</td>
 		<td>
-            {{donationAmount}}
+      {{donationAmount}}
 		</td><td>
-            {{donationType}}
+      {{donationType}}
 		</td>
 		<td>
-			<input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
+      <button type="button" class="btn btn-success btn-lg" value="Edit Details" onclick="window.location.href='{{url}}'">Edit Details</button>
 		</td>
 	</tr>
     {{/each}}
@@ -45,7 +109,12 @@
         <h1>No donation Records</h1>
     {{/if}}
 </table>
-<input type="text" id="myInput" placeholder="Search for names.." title="Type in a name">
+<!--             REGISTARTION              -->
+<div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+  <i class="fas fa-search" aria-hidden="true"></i>
+  <input class="form-control form-control-sm ml-3 w-75" type="text" id="myInput" placeholder="Search for previous guest records" aria-label="Search">
+</div>
 <table id="myTable" class="table table-bordered">
     <thead>
       <tr>
@@ -61,37 +130,36 @@
 			{{checkedIn}}
 		</td>
 		<td>
-            {{#if checkedOut}}
-            {{checkedOut}}
-            {{else}}
-			<p>Not checked out</p>
-            {{/if}}
+      {{#if checkedOut}}
+      {{checkedOut}}
+      {{else}}
+			  <p>Not checked out</p>
+      {{/if}}
 		</td>
 		<td>
-			<input type="button" value="More Details" class="btn-info" onclick="window.location.href='{{url}}'">
+      <button type="button" class="btn btn-success btn-lg" value="Edit Details" onclick="window.location.href='{{url}}'">Edit Details</button>
 		</td>
 	</tr>
     {{/each}}
     {{else}}
-        <h1>No Registration Records</h1>
+      <h1>No Registration Records</h1>
     {{/if}}
 </table>
 <script>
   function filterTable(event) {
     var filter = event.target.value.toUpperCase();
     var rows = document.querySelector("#myTable tbody").rows;
-    
     for (var i = 0; i < rows.length; i++) {
-        var firstCol = rows[i].cells[0].textContent.toUpperCase();
-        var secondCol = rows[i].cells[1].textContent.toUpperCase();
-        var thirdCol = rows[i].cells[2].textContent.toUpperCase();
-        if (
-          firstCol.indexOf(filter) > -1 
-          || secondCol.indexOf(filter) > -1 
-          || thirdCol.indexOf(filter) > -1
-          )
-          {rows[i].style.display = "";}
-        else {rows[i].style.display = "none";}      
+      var firstCol = rows[i].cells[0].textContent.toUpperCase();
+      var secondCol = rows[i].cells[1].textContent.toUpperCase();
+      var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+      if (
+        firstCol.indexOf(filter) > -1 
+        || secondCol.indexOf(filter) > -1 
+        || thirdCol.indexOf(filter) > -1
+        )
+        {rows[i].style.display = "";}
+      else {rows[i].style.display = "none";}      
     }
 }
 
